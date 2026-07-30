@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase - 品质生活，尽在掌握</title>
+    <style>
+        /* ========== Reset & Base ========== */
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+        :root {
+            --primary: #ff4757;
+            --primary-dark: #e84118;
+            --secondary: #2ed573;
+            --accent: #ffa502;
+            --dark: #2f3542;
+            --gray: #747d8c;
+            --light-gray: #f1f2f6;
+            --white: #ffffff;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 25px rgba(0,0,0,0.15);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            --max-width: 1280px;
+        }
+        body {
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+            background: #f8f9fc;color:var(--dark);line-height:1.6;overflow-x:hidden;
+        }
+        a{text-decoration:none;color:inherit}ul{list-style:none}img{max-width:100%;display:block}
+        button{cursor:pointer;border:none;outline:none;font-family:inherit}
+        .container{max-width:var(--max-width);margin:0 auto;padding:0 20px}
+
+        /* ========== Top Bar ========== */
+        .top-bar{background:var(--dark);color:#ccc;font-size:13px;padding:6px 0}
+        .top-bar .container{display:flex;justify-content:space-between;align-items:center}
+        .top-bar-links a{margin-left:18px;transition:color .2s}
+        .top-bar-links a:hover{color:var(--white)}
+        .top-bar-msg{display:flex;align-items:center;gap:6px}
+
+        /* ========== Header ========== */
+        .header{background:var(--white);box-shadow:var(--shadow);position:sticky;top:0;z-index:1000}
+        .header .container{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;gap:24px}
+        .logo{font-size:28px;font-weight:800;color:var(--primary);letter-spacing:-1px;white-space:nowrap}
+        .logo span{color:var(--dark)}
+        .search-box{flex:1;max-width:520px;display:flex;border:2px solid var(--primary);border-radius:30px;overflow:hidden;transition:var(--transition)}
+        .search-box:focus-within{box-shadow:0 0 0 4px rgba(255,71,87,0.15)}
+        .search-box input{flex:1;border:none;padding:12px 20px;font-size:15px;outline:none;background:transparent}
+        .search-box button{background:var(--primary);color:var(--white);padding:12px 28px;font-size:15px;font-weight:600;transition:background .3s}
+        .search-box button:hover{background:var(--primary-dark)}
+        .header-icons{display:flex;gap:20px;font-size:22px;color:var(--dark)}
+        .header-icons .icon-item{position:relative;cursor:pointer;transition:color .2s;display:flex;flex-direction:column;align-items:center;font-size:12px;gap:2px}
+        .header-icons .icon-item svg{width:24px;height:24px}
+        .header-icons .icon-item:hover{color:var(--primary)}
+        .cart-badge{position:absolute;top:-6px;right:-10px;background:var(--primary);color:white;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+        /* ========== Nav ========== */
+        .nav{background:var(--white);border-top:1px solid var(--light-gray)}
+        .nav .container{padding-top:0;padding-bottom:0}
+        .nav-list{display:flex;gap:0}
+        .nav-list>li{position:relative}
+        .nav-list>li>a{display:block;padding:14px 22px;font-size:15px;font-weight:500;color:var(--dark);transition:var(--transition);position:relative}
+        .nav-list>li>a::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--primary);transition:width .3s}
+        .nav-list>li>a:hover{color:var(--primary)}
+        .nav-list>li>a:hover::after{width:60%}
+        .nav-list>li:first-child>a{background:var(--primary);color:var(--white);font-weight:600}
+
+        /* ========== Section Titles ========== */
+        .section-title{text-align:center;margin-bottom:40px}
+        .section-title h2{font-size:32px;font-weight:700;color:var(--dark);position:relative;display:inline-block}
+        .section-title h2::after{content:'';display:block;width:60px;height:4px;background:var(--primary);border-radius:2px;margin:10px auto 0}
+        .section-title p{color:var(--gray);margin-top:8px;font-size:15px}
+
+        /* ========== Carousel ========== */
+        .carousel-section{padding:30px 0 50px;background:var(--white)}
+        .carousel-wrapper{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-hover)}
+        .carousel-track{display:flex;transition:transform .6s cubic-bezier(0.4,0,0.2,1)}
+        .carousel-slide{min-width:100%;position:relative;height:420px}
+        .carousel-slide img{width:100%;height:100%;object-fit:cover}
+        .carousel-slide .slide-content{position:absolute;top:50%;left:80px;transform:translateY(-50%);max-width:440px;animation:fadeInUp .6s ease}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(-50%) translateY(30px)}to{opacity:1;transform:translateY(-50%)}}
+        .slide-content .tag{display:inline-block;background:var(--primary);color:white;padding:4px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:12px}
+        .slide-content h3{font-size:38px;font-weight:800;color:var(--white);line-height:1.2;margin-bottom:12px;text-shadow:0 2px 8px rgba(0,0,0,.2)}
+        .slide-content p{color:rgba(255,255,255,.9);font-size:16px;margin-bottom:24px;line-height:1.6}
+        .slide-content .btn-primary{display:inline-block;background:var(--white);color:var(--primary);padding:12px 32px;border-radius:30px;font-size:16px;font-weight:600;transition:var(--transition)}
+        .slide-content .btn-primary:hover{background:var(--primary);color:var(--white);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,71,87,.4)}
+        .carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.9);color:var(--dark);font-size:20px;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+        .carousel-btn:hover{background:var(--white);box-shadow:0 4px 16px rgba(0,0,0,.25)}
+        .carousel-btn.prev{left:20px}.carousel-btn.next{right:20px}
+        .carousel-dots{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+        .carousel-dots .dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:var(--transition)}
+        .carousel-dots .dot.active{background:var(--white);width:32px;border-radius:6px}
+
+        /* ========== Features Bar ========== */
+        .features-bar{background:var(--white);padding:24px 0;border-bottom:1px solid var(--light-gray)}
+        .features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+        .feature-item{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px;transition:var(--transition)}
+        .feature-item:hover{transform:translateY(-2px)}
+        .feature-icon{width:48px;height:48px;background:var(--light-gray);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px}
+        .feature-text strong{display:block;font-size:15px;color:var(--dark)}
+        .feature-text span{font-size:12px;color:var(--gray)}
+
+        /* ========== Product Card (Enhanced) ========== */
+        .hot-section{padding:60px 0;background:var(--white)}
+        .product-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+        .product-card{background:var(--white);border-radius:var(--radius);overflow:hidden;transition:var(--transition);box-shadow:var(--shadow);cursor:pointer;position:relative;border:1px solid transparent}
+        .product-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
+        .product-img{height:240px;background:var(--light-gray);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+        .product-img .img-main{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+        .product-card:hover .img-main{transform:scale(1.08)}
+        .product-img .img-hover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s}
+        .product-card:hover .img-hover{opacity:1}
+        .product-badge{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;padding:4px 12px;border-radius:4px;z-index:2}
+        .badge-hot{background:var(--primary);color:white}
+        .badge-new{background:var(--secondary);color:white}
+        .badge-discount{background:var(--accent);color:white}
+        .product-actions{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateX(10px);transition:var(--transition);z-index:2}
+        .product-card:hover .product-actions{opacity:1;transform:translateX(0)}
+        .product-actions button{width:38px;height:38px;border-radius:50%;background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;font-size:15px;transition:var(--transition)}
+        .product-actions button:hover{background:var(--primary);color:white}
+        .product-info{padding:16px}
+        .product-info h4{font-size:14px;font-weight:500;margin-bottom:8px;color:var(--dark);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .product-price{display:flex;align-items:baseline;gap:8px}
+        .price-current{font-size:20px;font-weight:700;color:var(--primary)}
+        .price-current .symbol{font-size:14px}
+        .price-original{font-size:13px;color:var(--gray);text-decoration:line-through}
+        .product-rating{display:flex;align-items:center;gap:4px;margin-top:8px;font-size:12px;color:var(--accent)}
+        .product-rating span{color:var(--gray)}
+        .product-card .btn-buy{display:block;width:100%;background:var(--primary);color:white;padding:10px 0;font-size:14px;font-weight:600;text-align:center;transition:background .3s;margin-top:6px;border-radius:0 0 var(--radius) var(--radius)}
+        .product-card .btn-buy:hover{background:var(--primary-dark)}
+
+        /* ========== Promotions ========== */
+        .promo-section{padding:60px 0}
+        .promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+        .promo-card{border-radius:var(--radius);overflow:hidden;position:relative;height:240px;cursor:pointer;transition:var(--transition);display:flex;align-items:center}
+        .promo-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+        .promo-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s}
+        .promo-card:hover .promo-bg{transform:scale(1.05)}
+        .promo-content{position:relative;z-index:2;padding:40px;color:white}
+        .promo-card:nth-child(1) .promo-bg{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+        .promo-card:nth-child(2) .promo-bg{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%)}
+        .promo-tag{display:inline-block;background:rgba(255,255,255,.25);padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:10px;backdrop-filter:blur(4px)}
+        .promo-content h3{font-size:26px;font-weight:700;margin-bottom:8px}
+        .promo-content p{font-size:14px;opacity:.9;margin-bottom:16px}
+        .promo-content .btn-outline{display:inline-block;border:2px solid white;color:white;padding:8px 24px;border-radius:25px;font-weight:600;font-size:14px;transition:var(--transition)}
+        .promo-content .btn-outline:hover{background:white;color:var(--dark)}
+        .promo-banners{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        .promo-banner{background:var(--white);border-radius:var(--radius);padding:24px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow)}
+        .promo-banner:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+        .promo-banner-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+        .promo-banner:nth-child(1) .promo-banner-icon{background:#fff3e0}
+        .promo-banner:nth-child(2) .promo-banner-icon{background:#e8f5e9}
+        .promo-banner:nth-child(3) .promo-banner-icon{background:#e3f2fd}
+        .promo-banner-info h4{font-size:15px;color:var(--dark);margin-bottom:4px}
+        .promo-banner-info p{font-size:12px;color:var(--gray)}
+
+        /* ========== Module 2 Review Section ========== */
+        .review-section{padding:60px 0;background:var(--white)}
+        .review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+        .review-card{background:var(--light-gray);border-radius:var(--radius);padding:28px;transition:var(--transition)}
+        .review-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover)}
+        .review-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .review-avatar{width:50px;height:50px;border-radius:50%;object-fit:cover}
+        .review-stars{color:#ffa502;font-size:14px;margin-top:2px}
+        .review-text{color:var(--dark);font-size:14px;line-height:1.8;margin-bottom:12px}
+        .review-product{font-size:12px;color:var(--gray)}
+        .review-images{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+        .review-images img{width:80px;height:80px;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;transition:transform .3s}
+        .review-images img:hover{transform:scale(1.1)}
+
+        /* ========== Newsletter & Footer ========== */
+        .newsletter{padding:50px 0;background:linear-gradient(135deg,var(--dark) 0%,#1e1e2d 100%);color:white;text-align:center}
+        .newsletter h3{font-size:26px;margin-bottom:8px}
+        .newsletter p{color:#aaa;margin-bottom:24px}
+        .newsletter-form{display:flex;max-width:480px;margin:0 auto;gap:0}
+        .newsletter-form input{flex:1;padding:14px 20px;border:none;border-radius:30px 0 0 30px;font-size:15px;outline:none}
+        .newsletter-form button{background:var(--primary);color:white;padding:14px 30px;border-radius:0 30px 30px 0;font-size:15px;font-weight:600;transition:background .3s}
+        .newsletter-form button:hover{background:var(--primary-dark)}
+        .footer{background:var(--dark);color:#aaa;padding:50px 0 0}
+        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08)}
+        .footer-col h4{color:white;font-size:16px;margin-bottom:18px;position:relative;padding-bottom:10px}
+        .footer-col h4::after{content:'';position:absolute;bottom:0;left:0;width:30px;height:2px;background:var(--primary)}
+        .footer-col.about p{line-height:1.8;margin-bottom:16px}
+        .footer-col ul li{margin-bottom:10px}
+        .footer-col ul li a{color:#aaa;transition:color .2s}
+        .footer-col ul li a:hover{color:var(--primary)}
+        .footer-bottom{text-align:center;padding:20px 0;font-size:13px;color:#666}
+
+        /* ========== Toast Notification ========== */
+        .toast{position:fixed;top:30px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--dark);color:white;padding:14px 28px;border-radius:30px;font-size:14px;font-weight:500;z-index:10000;transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        .toast.success{background:var(--secondary)}
+
+        /* ============================================= */
+        /* ========== PRODUCT DETAIL MODAL ========== */
+        /* ============================================= */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:5000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(4px)}
+        .modal-overlay.active{opacity:1;pointer-events:all}
+        .modal{background:var(--white);border-radius:16px;width:92%;max-width:1000px;max-height:90vh;overflow-y:auto;transform:translateY(40px) scale(.96);transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275);position:relative}
+        .modal-overlay.active .modal{transform:translateY(0) scale(1)}
+        .modal-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:var(--light-gray);font-size:20px;display:flex;align-items:center;justify-content:center;z-index:10;transition:var(--transition)}
+        .modal-close:hover{background:var(--primary);color:white}
+        .modal-body{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:500px}
+        .modal-gallery{background:#f5f5f5;padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .modal-gallery .gallery-main{width:100%;max-height:380px;object-fit:contain;border-radius:var(--radius);transition:opacity .3s}
+        .modal-gallery .gallery-thumbs{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+        .modal-gallery .gallery-thumb{width:70px;height:70px;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;border:2px solid transparent;transition:var(--transition);opacity:.6}
+        .modal-gallery .gallery-thumb:hover,.gallery-thumb.active{border-color:var(--primary);opacity:1}
+        .gallery-label{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.6);color:white;font-size:10px;padding:2px 8px;border-radius:10px;pointer-events:none}
+        .modal-info{padding:40px;display:flex;flex-direction:column}
+        .modal-info .product-category{font-size:12px;color:var(--primary);text-transform:uppercase;font-weight:600;letter-spacing:1px;margin-bottom:8px}
+        .modal-info h2{font-size:24px;font-weight:700;color:var(--dark);margin-bottom:16px;line-height:1.3}
+        .modal-info .price-block{display:flex;align-items:baseline;gap:12px;background:linear-gradient(135deg,#fff5f5 0%,#fff0f0 100%);padding:16px 20px;border-radius:var(--radius-sm);margin-bottom:20px}
+        .modal-info .price-block .big-price{font-size:36px;font-weight:800;color:var(--primary)}
+        .modal-info .price-block .orig-price{font-size:16px;color:var(--gray);text-decoration:line-through}
+        .modal-info .price-block .saving{font-size:13px;color:var(--secondary);font-weight:600;margin-left:auto}
+        .modal-info .specs{margin-bottom:24px}
+        .modal-info .specs h4{font-size:14px;color:var(--gray);margin-bottom:10px}
+        .modal-info .specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .modal-info .spec-item{background:var(--light-gray);padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;display:flex;justify-content:space-between}
+        .modal-info .spec-item .spec-label{color:var(--gray)}
+        .modal-info .spec-item .spec-value{font-weight:600;color:var(--dark)}
+        .modal-info .desc-text{font-size:14px;color:var(--gray);line-height:1.8;margin-bottom:24px;flex:1}
+        .modal-info .qty-row{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+        .modal-info .qty-row span{font-size:14px;color:var(--gray)}
+        .modal-info .qty-controls{display:flex;align-items:center;border:1px solid #ddd;border-radius:8px;overflow:hidden}
+        .modal-info .qty-controls button{width:36px;height:36px;background:var(--light-gray);font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+        .modal-info .qty-controls button:hover{background:#ddd}
+        .modal-info .qty-controls .qty-val{width:48px;text-align:center;font-weight:600;font-size:16px}
+        .modal-info .btn-row{display:flex;gap:12px}
+        .modal-info .btn-add-cart{flex:1;padding:14px 0;background:var(--white);border:2px solid var(--primary);color:var(--primary);border-radius:30px;font-size:15px;font-weight:600;transition:var(--transition)}
+        .modal-info .btn-add-cart:hover{background:var(--primary);color:white}
+        .modal-info .btn-buy-now{flex:1;padding:14px 0;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:white;border-radius:30px;font-size:15px;font-weight:600;transition:var(--transition);box-shadow:0 4px 15px rgba(255,71,87,.35)}
+        .modal-info .btn-buy-now:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(255,71,87,.5)}
+
+        /* ========== Gallery Lightbox ========== */
+        .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:6000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+        .lightbox.active{opacity:1;pointer-events:all}
+        .lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:8px;transform:scale(.9);transition:transform .3s}
+        .lightbox.active img{transform:scale(1)}
+        .lightbox-close{position:absolute;top:30px;right:40px;color:white;font-size:36px;cursor:pointer;transition:opacity .2s}
+        .lightbox-close:hover{opacity:.7}
+
+        /* ============================================= */
+        /* ========== PAYMENT MODAL ========== */
+        /* ============================================= */
+        .payment-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:5500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(4px)}
+        .payment-overlay.active{opacity:1;pointer-events:all}
+        .payment-modal{background:var(--white);border-radius:16px;width:92%;max-width:520px;max-height:90vh;overflow-y:auto;transform:translateY(40px) scale(.96);transition:transform .4s cubic-bezier(0.175,0.885,0.32,1.275)}
+        .payment-overlay.active .payment-modal{transform:translateY(0) scale(1)}
+        .payment-header{background:linear-gradient(135deg,var(--dark) 0%,#1e1e2d 100%);color:white;padding:28px 30px;text-align:center;border-radius:16px 16px 0 0}
+        .payment-header h3{font-size:22px;font-weight:700;margin-bottom:4px}
+        .payment-header p{font-size:13px;opacity:.7}
+        .payment-body{padding:24px 30px}
+        .payment-summary{background:var(--light-gray);border-radius:var(--radius-sm);padding:20px;margin-bottom:24px}
+        .payment-summary .summary-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px}
+        .payment-summary .summary-total{border-top:1px dashed #ddd;margin-top:8px;padding-top:12px;font-size:18px;font-weight:700;color:var(--primary)}
+        .payment-methods{margin-bottom:24px}
+        .payment-methods h4{font-size:14px;color:var(--gray);margin-bottom:12px}
+        .payment-method{display:flex;align-items:center;gap:14px;padding:14px 18px;border:2px solid var(--light-gray);border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);margin-bottom:10px}
+        .payment-method:hover,.payment-method.selected{border-color:var(--primary);background:#fff5f5}
+        .payment-method .pm-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px}
+        .pm-wechat{background:#e8fce8}.pm-alipay{background:#e8f0ff}.pm-card{background:#fff8e8}
+        .payment-method .pm-info{flex:1}
+        .payment-method .pm-name{font-weight:600;font-size:14px;color:var(--dark)}
+        .payment-method .pm-desc{font-size:12px;color:var(--gray)}
+        .payment-method .pm-check{width:22px;height:22px;border-radius:50%;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
+        .payment-method.selected .pm-check{background:var(--primary);border-color:var(--primary)}
+        .payment-method.selected .pm-check::after{content:'✓';color:white;font-size:12px;font-weight:700}
+        .btn-pay{width:100%;padding:16px 0;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:white;border-radius:30px;font-size:17px;font-weight:700;transition:var(--transition);box-shadow:0 4px 15px rgba(255,71,87,.35);letter-spacing:1px}
+        .btn-pay:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,71,87,.5)}
+        .btn-pay:disabled{opacity:.6;cursor:not-allowed;transform:none}
+        .payment-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);color:white;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+        .payment-close:hover{background:rgba(255,255,255,.35)}
+
+        /* ========== Payment Processing Screen ========== */
+        .processing-screen{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:5800;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s}
+        .processing-screen.active{opacity:1;pointer-events:all}
+        .processing-spinner{width:64px;height:64px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:24px}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .processing-text{color:white;font-size:18px;font-weight:600;margin-bottom:8px}
+        .processing-sub{color:rgba(255,255,255,.6);font-size:13px}
+
+        /* ========== Payment Success Screen ========== */
+        .success-screen{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:5800;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s}
+        .success-screen.active{opacity:1;pointer-events:all}
+        .success-icon{width:80px;height:80px;border-radius:50%;background:var(--secondary);display:flex;align-items:center;justify-content:center;font-size:40px;color:white;margin-bottom:20px;animation:popIn .5s cubic-bezier(0.175,0.885,0.32,1.275)}
+        @keyframes popIn{0%{transform:scale(0)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+        .success-text{color:white;font-size:22px;font-weight:700;margin-bottom:6px}
+        .success-sub{color:rgba(255,255,255,.6);font-size:14px;margin-bottom:30px}
+        .success-btn{padding:12px 40px;background:white;color:var(--dark);border-radius:30px;font-size:15px;font-weight:600;transition:var(--transition)}
+        .success-btn:hover{background:var(--primary);color:white}
+
+        /* ========== Responsive ========== */
+        @media (max-width:1200px){.product-grid{grid-template-columns:repeat(4,1fr)}}
+        @media (max-width:992px){
+            .features-grid{grid-template-columns:repeat(2,1fr)}
+            .product-grid{grid-template-columns:repeat(3,1fr)}
+            .promo-grid{grid-template-columns:1fr}.promo-banners{grid-template-columns:1fr}
+            .footer-grid{grid-template-columns:1fr 1fr}
+            .carousel-slide{height:320px}
+            .slide-content h3{font-size:26px}
+            .modal-body{grid-template-columns:1fr}
+            .review-grid{grid-template-columns:1fr 1fr}
+        }
+        @media (max-width:768px){
+            .product-grid{grid-template-columns:repeat(2,1fr)}
+            .carousel-slide{height:250px}
+            .slide-content{left:30px}.slide-content h3{font-size:20px}.slide-content p{display:none}
+            .search-box{display:none}
+            .nav-list{overflow-x:auto}
+            .modal-info{padding:24px}
+            .modal-info .btn-row{flex-direction:column}
+            .review-grid{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== Top Bar ========== -->
+<div class="top-bar">
+    <div class="container">
+        <div class="top-bar-msg">🔥 年终大促进行中，全场低至5折！</div>
+        <div class="top-bar-links">
+            <a href="#">登录</a><a href="#">注册</a><a href="#">我的订单</a><a href="#">客服中心</a>
+        </div>
+    </div>
+</div>
+
+<!-- ========== Header ========== -->
+<header class="header">
+    <div class="container">
+        <a href="#" class="logo">Shop<span>Ease</span></a>
+        <div class="search-box">
+            <input type="text" placeholder="搜索你想要的商品..."><button>🔍 搜索</button>
+        </div>
+        <div class="header-icons">
+            <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>我的</div>
+            <div class="icon-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>收藏</div>
+            <div class="icon-item" id="cartIcon" style="position:relative;cursor:pointer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                <span class="cart-badge" id="cartBadge">0</span>购物车
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ========== Navigation ========== -->
+<nav class="nav">
+    <div class="container">
+        <ul class="nav-list">
+            <li><a href="#">📂 全部分类</a></li><li><a href="#">首页</a></li><li><a href="#">今日秒杀</a></li>
+            <li><a href="#">品牌特卖</a></li><li><a href="#">新品上市</a></li><li><a href="#">热销榜单</a></li><li><a href="#">优惠券</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ========== Carousel ========== -->
+<section class="carousel-section">
+    <div class="container">
+        <div class="carousel-wrapper" id="carousel">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1240&h=420&fit=crop" alt="年度大促"><div class="slide-content"><span class="tag">🔥 限时活动</span><h3>年终大促<br>全场低至5折</h3><p>精选好物超值购，限时秒杀不容错过</p><a href="#" class="btn-primary">立即抢购 →</a></div></div>
+                <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=1240&h=420&fit=crop" alt="新品首发"><div class="slide-content"><span class="tag">✨ 新品首发</span><h3>旗舰新品<br>震撼上市</h3><p>预约即享专属优惠，限量赠品先到先得</p><a href="#" class="btn-primary">了解详情 →</a></div></div>
+                <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=1240&h=420&fit=crop" alt="数码好物节"><div class="slide-content"><span class="tag">🎯 品牌精选</span><h3>数码好物节<br>满300减50</h3><p>耳机、音响、智能设备一站购齐</p><a href="#" class="btn-primary">逛一逛 →</a></div></div>
+            </div>
+            <button class="carousel-btn prev" id="carouselPrev">‹</button>
+            <button class="carousel-btn next" id="carouselNext">›</button>
+            <div class="carousel-dots" id="carouselDots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== Features Bar ========== -->
+<section class="features-bar">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-item"><div class="feature-icon">🚚</div><div class="feature-text"><strong>免费配送</strong><span>满99元包邮</span></div></div>
+            <div class="feature-item"><div class="feature-icon">🔄</div><div class="feature-text"><strong>7天退换</strong><span>无忧购物保障</span></div></div>
+            <div class="feature-item"><div class="feature-icon">🛡️</div><div class="feature-text"><strong>正品保障</strong><span>品质假一赔十</span></div></div>
+            <div class="feature-item"><div class="feature-icon">💬</div><div class="feature-text"><strong>在线客服</strong><span>24小时全天候</span></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== Hot Products Section ========== -->
+<section class="hot-section" id="products">
+    <div class="container">
+        <div class="section-title"><h2>🔥 热门商品</h2><p>大家都在买，精选热销单品推荐</p></div>
+        <div class="product-grid" id="productGrid"></div>
+    </div>
+</section>
+
+<!-- ========== Customer Reviews ========== -->
+<section class="review-section">
+    <div class="container">
+        <div class="section-title"><h2>💬 用户真实评价</h2><p>看看大家怎么说</p></div>
+        <div class="review-grid" id="reviewGrid"></div>
+    </div>
+</section>
+
+<!-- ========== Promotions ========== -->
+<section class="promo-section">
+    <div class="container">
+        <div class="section-title"><h2>限时活动</h2><p>超值优惠，错过再等一年</p></div>
+        <div class="promo-grid">
+            <div class="promo-card"><div class="promo-bg"></div><div class="promo-content"><span class="promo-tag">⏰ 限时72小时</span><h3>超级品牌日</h3><p>大牌数码产品直降千元，叠加优惠券更划算</p><a href="#" class="btn-outline">查看专场 →</a></div></div>
+            <div class="promo-card"><div class="promo-bg"></div><div class="promo-content"><span class="promo-tag">🎁 新人专享</span><h3>新用户大礼包</h3><p>注册即送188元优惠券礼包，首单再享9折</p><a href="#" class="btn-outline">领取福利 →</a></div></div>
+        </div>
+        <div class="promo-banners">
+            <div class="promo-banner"><div class="promo-banner-icon">⚡</div><div class="promo-banner-info"><h4>限时秒杀</h4><p>每日10点准时开抢</p></div></div>
+            <div class="promo-banner"><div class="promo-banner-icon">🎫</div><div class="promo-banner-info"><h4>领券中心</h4><p>满减优惠券免费领</p></div></div>
+            <div class="promo-banner"><div class="promo-banner-icon">👥</div><div class="promo-banner-info"><h4>拼团优惠</h4><p>2人成团立享好价</p></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== Newsletter ========== -->
+<section class="newsletter">
+    <div class="container">
+        <h3>📬 订阅我们的资讯</h3>
+        <p>第一时间获取新品上架、促销活动信息</p>
+        <div class="newsletter-form"><input type="email" placeholder="请输入您的邮箱地址"><button>立即订阅</button></div>
+    </div>
+</section>
+
+<!-- ========== Footer ========== -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col about"><h4>关于 ShopEase</h4><p>ShopEase 致力于为消费者提供高品质的数码产品与卓越的购物体验。正品保障、极速配送、贴心售后，让每一次购物都充满惊喜。</p></div>
+            <div class="footer-col"><h4>购物指南</h4><ul><li><a href="#">购物流程</a></li><li><a href="#">会员介绍</a></li><li><a href="#">常见问题</a></li><li><a href="#">联系客服</a></li></ul></div>
+            <div class="footer-col"><h4>配送方式</h4><ul><li><a href="#">上门自提</a></li><li><a href="#">快递运输</a></li><li><a href="#">物流查询</a></li><li><a href="#">配送范围</a></li></ul></div>
+            <div class="footer-col"><h4>售后服务</h4><ul><li><a href="#">退换货政策</a></li><li><a href="#">退款说明</a></li><li><a href="#">维修服务</a></li><li><a href="#">投诉建议</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 ShopEase. All rights reserved. | 仅用于演示用途</p></div>
+    </div>
+</footer>
+
+<!-- ========== Toast ========== -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================================= -->
+<!-- ========== PRODUCT DETAIL MODAL ========== -->
+<!-- ============================================= -->
+<div class="modal-overlay" id="detailModalOverlay">
+    <div class="modal" id="detailModal">
+        <button class="modal-close" id="modalClose">✕</button>
+        <div class="modal-body">
+            <div class="modal-gallery" id="modalGallery"></div>
+            <div class="modal-info" id="modalInfo"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== Lightbox ========== -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">✕</span>
+    <img src="" alt="" id="lightboxImg">
+</div>
+
+<!-- ========== PAYMENT MODAL ========== -->
+<div class="payment-overlay" id="paymentOverlay">
+    <div class="payment-modal" style="position:relative">
+        <button class="payment-close" id="paymentClose">✕</button>
+        <div class="payment-header">
+            <h3>💳 确认订单</h3>
+            <p>请选择支付方式完成付款</p>
+        </div>
+        <div class="payment-body">
+            <div class="payment-summary" id="paymentSummary"></div>
+            <div class="payment-methods">
+                <h4>选择支付方式</h4>
+                <div class="payment-method selected" data-method="wechat">
+                    <div class="pm-icon pm-wechat">💚</div>
+                    <div class="pm-info"><span class="pm-name">微信支付</span><span class="pm-desc">推荐安装微信的用户使用</span></div>
+                    <div class="pm-check"></div>
+                </div>
+                <div class="payment-method" data-method="alipay">
+                    <div class="pm-icon pm-alipay">💙</div>
+                    <div class="pm-info"><span class="pm-name">支付宝</span><span class="pm-desc">安全快捷的在线支付</span></div>
+                    <div class="pm-check"></div>
+                </div>
+                <div class="payment-method" data-method="card">
+                    <div class="pm-icon pm-card">💛</div>
+                    <div class="pm-info"><span class="pm-name">银行卡支付</span><span class="pm-desc">支持主流银行储蓄卡/信用卡</span></div>
+                    <div class="pm-check"></div>
+                </div>
+            </div>
+            <button class="btn-pay" id="btnPay">确认支付 ¥<span id="btnPayAmount">0.00</span></button>
+        </div>
+    </div>
+</div>
+
+<!-- ========== Processing Screen ========== -->
+<div class="processing-screen" id="processingScreen">
+    <div class="processing-spinner"></div>
+    <div class="processing-text">正在支付中...</div>
+    <div class="processing-sub">请勿关闭此页面</div>
+</div>
+
+<!-- ========== Success Screen ========== -->
+<div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <div class="success-text">支付成功！</div>
+    <div class="success-sub" id="successOrderMsg">订单号：SE202607290001，预计3-5天送达</div>
+    <button class="success-btn" id="successBtn">返回首页</button>
+</div>
+
+<!-- ============================================= -->
+<!-- ========== SCRIPTS ========== -->
+<!-- ============================================= -->
+<script>
+// ==================== DATA ====================
+const products = [
+    {
+        id: 1, name: 'iPhone 15 Pro Max 256GB', category: '智能手机', price: 8999, originalPrice: 9999,
+        rating: 4.9, sales: 25480, badge: 'hot',
+        images: [
+            'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1510557880182-3d4d3c55335c?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '侧面展示', '包装盒图', '实拍场景'],
+        specs: { '屏幕': '6.7英寸 OLED', '芯片': 'A17 Pro', '存储': '256GB', '电池': '4422mAh', '摄像头': '4800万像素', '重量': '221g' },
+        desc: 'iPhone 15 Pro Max 采用钛金属设计，配备 A17 Pro 芯片，带来前所未有的性能表现。4800万像素主摄系统，让每一张照片都惊艳出色。'
+    },
+    {
+        id: 2, name: 'MacBook Air M3 15英寸', category: '笔记本电脑', price: 10499, originalPrice: 11999,
+        rating: 4.8, sales: 18320, badge: 'new',
+        images: [
+            'https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1468436139062-f60a71c5c892?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '侧面展示', '办公场景', '实拍场景'],
+        specs: { '屏幕': '15.3英寸 Liquid Retina', '芯片': 'Apple M3', '内存': '8GB', '存储': '256GB SSD', '重量': '1.51kg', '续航': '18小时' },
+        desc: 'MacBook Air M3 拥有超薄轻便设计、15.3英寸大屏幕和 M3 芯片的强劲性能，是移动办公和创意的完美搭档。'
+    },
+    {
+        id: 3, name: 'AirPods Pro 第二代', category: '耳机音箱', price: 1699, originalPrice: 1999,
+        rating: 4.9, sales: 52100, badge: 'discount',
+        images: [
+            'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1631867675767-e5a77878c0ea?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '侧面展示', '佩戴展示', '充电盒展示'],
+        specs: { '芯片': 'Apple H2', '降噪': '自适应降噪', '防水': 'IPX4', '续航': '6小时+30小时', '充电': 'USB-C / MagSafe', '重量': '5.3g(单只)' },
+        desc: 'AirPods Pro 第二代搭载 H2 芯片，主动降噪效果提升 2 倍。自适应透明模式，让你在聆听音乐的同时感知周围环境。'
+    },
+    {
+        id: 4, name: 'Apple Watch Series 9', category: '智能穿戴', price: 2999, originalPrice: 3499,
+        rating: 4.7, sales: 15680, badge: 'hot',
+        images: [
+            'https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '侧面展示', '佩戴展示', '运动场景'],
+        specs: { '芯片': 'S9 SiP', '屏幕': 'Always-On Retina', '健康': '血氧+心电图', '防水': '50米', '续航': '18小时', '重量': '51.5g' },
+        desc: 'Apple Watch Series 9 搭载全新 S9 芯片，屏幕更亮、交互更快。全面的健康监测功能，做你的全天候健康伙伴。'
+    },
+    {
+        id: 5, name: 'Sony WH-1000XM5 降噪耳机', category: '耳机音箱', price: 2299, originalPrice: 2999,
+        rating: 4.8, sales: 9870, badge: 'discount',
+        images: [
+            'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '折叠收纳', '佩戴展示', '办公场景'],
+        specs: { '驱动单元': '30mm', '降噪': '双芯片降噪', '续航': '30小时', '快充': '3分钟=3小时', '重量': '250g', '连接': '蓝牙5.2 / LDAC' },
+        desc: 'Sony WH-1000XM5 采用全新设计的降噪系统，8个麦克风精准捕捉环境噪音，为你带来极致静谧的聆听体验。'
+    },
+    {
+        id: 6, name: 'iPad Air M2 11英寸', category: '笔记本电脑', price: 4399, originalPrice: 4799,
+        rating: 4.8, sales: 12340, badge: 'new',
+        images: [
+            'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1561154464-82e9adf32764?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1467949576161-6ce8e2e3e27f?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '侧面展示', '创作场景', '配件展示'],
+        specs: { '屏幕': '11英寸 Liquid Retina', '芯片': 'Apple M2', '存储': '128GB', '摄像头': '1200万像素', '重量': '462g', '配件': '支持Apple Pencil' },
+        desc: 'iPad Air M2 搭载强劲的 M2 芯片，11英寸屏幕，轻薄便携。无论是绘画、笔记还是轻度办公，都能轻松胜任。'
+    },
+    {
+        id: 7, name: 'DJI Mini 4 Pro 无人机', category: '相机影像', price: 4788, originalPrice: 5288,
+        rating: 4.9, sales: 8560, badge: 'hot',
+        images: [
+            'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1506947411486-a56738267384?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1527977966376-1c8408f9f108?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1533309907656-7b1c2ee56ddf?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '飞行展示', '航拍样张', '实拍场景'],
+        specs: { '重量': '249g', '摄像头': '1/1.3英寸 CMOS', '视频': '4K/100fps', '续航': '34分钟', '图传': 'O4 20km', '避障': '全向避障' },
+        desc: 'DJI Mini 4 Pro 仅 249g 的超轻机身，无需登记即可飞行。旗舰级影像系统，让航拍创作无拘无束。'
+    },
+    {
+        id: 8, name: 'Samsung Galaxy S24 Ultra', category: '智能手机', price: 8999, originalPrice: 10199,
+        rating: 4.7, sales: 11230, badge: 'discount',
+        images: [
+            'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '侧面展示', 'S Pen展示', '实拍场景'],
+        specs: { '屏幕': '6.8英寸 Dynamic AMOLED', '芯片': '骁龙8 Gen3', '存储': '256GB', '摄像头': '200MP + 四摄', '电池': '5000mAh', 'S Pen': '内置' },
+        desc: 'Samsung Galaxy S24 Ultra 配备 Galaxy AI 智能助手，200MP 超清四摄系统和内置 S Pen，是真正的全能旗舰。'
+    },
+    {
+        id: 9, name: 'Nintendo Switch OLED', category: '游戏设备', price: 2199, originalPrice: 2599,
+        rating: 4.8, sales: 34100, badge: 'hot',
+        images: [
+            'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1612287230209-1ff6879c84f2?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1593118247619-e2a6a7381543?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', 'Joy-Con展示', 'TV模式', '家庭娱乐'],
+        specs: { '屏幕': '7英寸 OLED', '存储': '64GB', '续航': '4.5-9小时', '分辨率': 'TV 1080p', '重量': '420g', '多人': '支持本地联机' },
+        desc: 'Nintendo Switch OLED 配备鲜艳的 7 英寸 OLED 屏幕和更宽广的可调节支架，带来更沉浸的游戏体验。'
+    },
+    {
+        id: 10, name: 'Anker 氮化镓充电器 100W', category: '充电配件', price: 199, originalPrice: 299,
+        rating: 4.6, sales: 67800, badge: 'discount',
+        images: [
+            'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1625842268584-8f3296236761?w=600&h=600&fit=crop',
+            'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=600&fit=crop'
+        ],
+        imageLabels: ['正面展示', '接口展示', '充电场景', '便携展示'],
+        specs: { '功率': '100W Max', '接口': '2C1A', '技术': 'GaN氮化镓', '协议': 'PD 3.0 / QC 4.0', '重量': '180g', '尺寸': '67×56×31mm' },
+        desc: 'Anker 100W 氮化镓充电器采用第三代半导体材料，体积更小、效率更高。三口同时快充，一个解决所有设备充电需求。'
+    }
+];
+
+const badgeMap = {
+    hot: { class: 'badge-hot', text: '🔥 热销' },
+    new: { class: 'badge-new', text: '✨ 新品' },
+    discount: { class: 'badge-discount', text: '⚡ 特惠' }
+};
+
+// ==================== CART STATE ====================
+let cart = [];
+let currentProduct = null;
+let detailQty = 1;
+
+function updateCartBadge() {
+    const total = cart.reduce((sum, item) => sum + item.qty, 0);
+    const badge = document.getElementById('cartBadge');
+    badge.textContent = total;
+    if (total > 0) {
+        badge.style.display = 'flex';
+    }
+}
+
+function addToCart(product, qty) {
+    const existing = cart.find(item => item.id === product.id);
+    if (existing) {
+        existing.qty += qty;
+    } else {
+        cart.push({ ...product, qty });
+    }
+    updateCartBadge();
+    showToast(`✅ 已将 ${product.name} ×${qty} 加入购物车`, 'success');
+}
+
+// ==================== TOAST ====================
+function showToast(msg, type) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast ' + (type || '');
+    toast.classList.add('show');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ==================== RENDER PRODUCTS ====================
+const productGrid = document.getElementById('productGrid');
+products.forEach(p => {
+    const badge = badgeMap[p.badge];
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+        <div class="product-img" onclick="openDetail(${p.id})">
+            <img class="img-main" src="${p.images[0]}" alt="${p.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22240%22%3E%3Crect fill=%22%23f1f2f6%22 width=%22240%22 height=%22240%22/%3E%3Ctext x=%22120%22 y=%22120%22 text-anchor=%22middle%22 font-size=%2250%22%3E📦%3C/text%3E%3C/svg%3E'">
+            <img class="img-hover" src="${p.images[1] || p.images[0]}" alt="${p.name} alternate" loading="lazy" onerror="this.style.display='none'">
+            <span class="product-badge ${badge.class}">${badge.text}</span>
+            <div class="product-actions">
+                <button title="加入收藏" onclick="event.stopPropagation();showToast('❤️ 已加入收藏夹')">♡</button>
+                <button title="加入购物车" onclick="event.stopPropagation();addToCart(${p.id},1)">🛒</button>
+            </div>
+        </div>
+        <div class="product-info" onclick="openDetail(${p.id})">
+            <h4>${p.name}</h4>
+            <div class="product-price">
+                <span class="price-current"><span class="symbol">¥</span>${p.price.toLocaleString()}</span>
+                <span class="price-original">¥${p.originalPrice.toLocaleString()}</span>
+            </div>
+            <div class="product-rating">⭐ ${p.rating} <span>| 已售 ${(p.sales/10000).toFixed(1)}万</span></div>
+        </div>
+        <button class="btn-buy" onclick="event.stopPropagation();directBuy(${p.id})">立即购买</button>
+    `;
+    productGrid.appendChild(card);
+});
+
+// ==================== PRODUCT DETAIL MODAL ====================
+function openDetail(productId) {
+    const p = products.find(pr => pr.id === productId);
+    if (!p) return;
+    currentProduct = p;
+    detailQty = 1;
+
+    // Build gallery
+    const gallery = document.getElementById('modalGallery');
+    gallery.innerHTML = `
+        ${p.images.map((img, i) => `<img class="gallery-main" src="${img}" alt="${p.name}" id="galleryMain" style="display:${i===0?'block':'none'}" onclick="openLightbox('${img}')">`).join('')}
+        <div class="gallery-thumbs">
+            ${p.images.map((img, i) => `
+                <div style="position:relative">
+                    <img class="gallery-thumb ${i===0?'active':''}" src="${img}" alt="${p.imageLabels[i]}" onclick="switchGalleryImage(${i})" loading="lazy">
+                    <span class="gallery-label">${p.imageLabels[i]}</span>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    // Build info
+    const saving = p.originalPrice - p.price;
+    const info = document.getElementById('modalInfo');
+    info.innerHTML = `
+        <div class="product-category">${p.category}</div>
+        <h2>${p.name}</h2>
+        <div class="price-block">
+            <span class="big-price">¥${p.price.toLocaleString()}</span>
+            <span class="orig-price">¥${p.originalPrice.toLocaleString()}</span>
+            <span class="saving">省 ¥${saving.toLocaleString()}</span>
+        </div>
+        <div class="specs">
+            <h4>📋 规格参数</h4>
+            <div class="specs-grid">
+                ${Object.entries(p.specs).map(([k,v]) => `
+                    <div class="spec-item"><span class="spec-label">${k}</span><span class="spec-value">${v}</span></div>
+                `).join('')}
+            </div>
+        </div>
+        <div class="desc-text">${p.desc}</div>
+        <div class="qty-row">
+            <span>数量：</span>
+            <div class="qty-controls">
+                <button onclick="changeQty(-1)">−</button>
+                <span class="qty-val" id="qtyVal">1</span>
+                <button onclick="changeQty(1)">+</button>
+            </div>
+        </div>
+        <div class="btn-row">
+            <button class="btn-add-cart" onclick="addToCartFromDetail()">🛒 加入购物车</button>
+            <button class="btn-buy-now" onclick="buyNowFromDetail()">⚡ 立即购买</button>
+        </div>
+    `;
+
+    document.getElementById('detailModalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+    document.getElementById('detailModalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function switchGalleryImage(index) {
+    const mains = document.querySelectorAll('#modalGallery .gallery-main');
+    const thumbs = document.querySelectorAll('#modalGallery .gallery-thumb');
+    mains.forEach((img, i) => { img.style.display = i === index ? 'block' : 'none'; });
+    thumbs.forEach((thumb, i) => { thumb.classList.toggle('active', i === index); });
+}
+
+function changeQty(delta) {
+    detailQty = Math.max(1, detailQty + delta);
+    const val = document.getElementById('qtyVal');
+    if (val) val.textContent = detailQty;
+}
+
+function addToCartFromDetail() {
+    if (!currentProduct) return;
+    addToCart(currentProduct, detailQty);
+}
+
+function buyNowFromDetail() {
+    if (!currentProduct) return;
+    openPayment(currentProduct, detailQty);
+}
+
+function directBuy(productId) {
+    const p = products.find(pr => pr.id === productId);
+    if (!p) return;
+    openPayment(p, 1);
+}
+
+// ==================== LIGHTBOX ====================
+function openLightbox(src) {
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ==================== PAYMENT ====================
+let paymentProduct = null;
+let paymentQty = 1;
+let selectedMethod = 'wechat';
+
+function openPayment(product, qty) {
+    paymentProduct = product;
+    paymentQty = qty;
+    selectedMethod = 'wechat';
+    const total = product.price * qty;
+
+    // Update summary
+    const summary = document.getElementById('paymentSummary');
+    summary.innerHTML = `
+        <div class="summary-row"><span>商品名称</span><span>${product.name}</span></div>
+        <div class="summary-row"><span>单价</span><span>¥${product.price.toLocaleString()}</span></div>
+        <div class="summary-row"><span>数量</span><span>×${qty}</span></div>
+        <div class="summary-row"><span>运费</span><span style="color:var(--secondary)">免运费</span></div>
+        <div class="summary-row summary-total"><span>应付金额</span><span>¥${total.toLocaleString()}</span></div>
+    `;
+    document.getElementById('btnPayAmount').textContent = total.toLocaleString();
+
+    // Reset payment method selection
+    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+    document.querySelector('.payment-method[data-method="wechat"]').classList.add('selected');
+
+    document.getElementById('paymentOverlay').classList.add('active');
+    // Close detail modal if open
+    document.getElementById('detailModalOverlay').classList.remove('active');
+}
+
+function closePayment() {
+    document.getElementById('paymentOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function processPayment() {
+    closePayment();
+    // Show processing
+    document.getElementById('processingScreen').classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Simulate payment processing
+    setTimeout(() => {
+        document.getElementById('processingScreen').classList.remove('active');
+        // Show success
+        const orderNo = 'SE' + new Date().toISOString().replace(/[-:T]/g,'').slice(0,14);
+        document.getElementById('successOrderMsg').textContent = `订单号：${orderNo}，预计3-5天送达`;
+        document.getElementById('successScreen').classList.add('active');
+    }, 2000 + Math.random() * 1500);
+}
+
+function closeSuccess() {
+    document.getElementById('successScreen').classList.remove('active');
+    document.body.style.overflow = '';
+    // Clear cart on successful purchase
+    cart = [];
+    updateCartBadge();
+}
+updateCartBadge();
+
+// ==================== EVENT LISTENERS ====================
+document.getElementById('modalClose').addEventListener('click', closeDetail);
+document.getElementById('detailModalOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeDetail();
+});
+
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeLightbox();
+});
+
+document.getElementById('paymentClose').addEventListener('click', closePayment);
+document.getElementById('paymentOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closePayment();
+});
+
+// Payment method selection
+document.querySelectorAll('.payment-method').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedMethod = el.dataset.method;
+    });
+});
+
+document.getElementById('btnPay').addEventListener('click', processPayment);
+document.getElementById('successBtn').addEventListener('click', closeSuccess);
+
+// Cart icon click
+document.getElementById('cartIcon').addEventListener('click', () => {
+    if (cart.length === 0) {
+        showToast('🛒 购物车还是空的，快去逛逛吧');
+        return;
+    }
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const items = cart.map(item => `  • ${item.name} ×${item.qty} = ¥${(item.price * item.qty).toLocaleString()}`).join('\n');
+    showToast(`🛒 购物车 (${cart.reduce((s,i)=>s+i.qty,0)}件)\n${items}\n────────────────\n合计：¥${total.toLocaleString()}`);
+});
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (document.getElementById('lightbox').classList.contains('active')) closeLightbox();
+        else if (document.getElementById('detailModalOverlay').classList.contains('active')) closeDetail();
+        else if (document.getElementById('paymentOverlay').classList.contains('active')) closePayment();
+    }
+});
+
+// ==================== CAROUSEL ====================
+(function() {
+    const track = document.getElementById('carouselTrack');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('#carouselDots .dot');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    let current = 0;
+    const total = slides.length;
+    let interval;
+
+    function goTo(index) {
+        current = ((index % total) + total) % total;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+    function startAuto() { stopAuto(); interval = setInterval(next, 4000); }
+    function stopAuto() { clearInterval(interval); }
+
+    nextBtn.addEventListener('click', () => { next(); startAuto(); });
+    prevBtn.addEventListener('click', () => { prev(); startAuto(); });
+    dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); startAuto(); }));
+
+    const wrapper = document.getElementById('carousel');
+    wrapper.addEventListener('mouseenter', stopAuto);
+    wrapper.addEventListener('mouseleave', startAuto);
+
+    let touchStartX = 0;
+    track.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; stopAuto(); }, { passive: true });
+    track.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+        startAuto();
+    }, { passive: true });
+    startAuto();
+})();
+
+// ==================== SEARCH ====================
+const searchInput = document.querySelector('.search-box input');
+const searchBtn = document.querySelector('.search-box button');
+searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    if (query) showToast(`🔍 搜索"${query}"——实际项目中将跳转搜索结果页`);
+});
+searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') searchBtn.click(); });
+
+// ==================== REVIEWS ====================
+const reviews = [
+    { name: '数码达人小王', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', stars: 5, text: '这款耳机降噪效果太惊艳了！地铁上几乎听不到外界噪音，音质也非常出色，低音饱满高音通透。', product: 'Sony WH-1000XM5', images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&h=150&fit=crop'] },
+    { name: 'Lily Chen', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face', stars: 5, text: 'iPhone 15 Pro Max 拍照效果太棒了，尤其是夜间模式，完全不用修图了！钛金属手感也很好。', product: 'iPhone 15 Pro Max', images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=150&h=150&fit=crop','https://images.unsplash.com/photo-1556656793-08538906a9f8?w=150&h=150&fit=crop'] },
+    { name: '程序员小张', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', stars: 4, text: 'MacBook Air M3 非常适合日常办公和轻度开发，电池能用一整天，带出去也很轻便。', product: 'MacBook Air M3', images: ['https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=150&h=150&fit=crop'] },
+];
+
+const reviewGrid = document.getElementById('reviewGrid');
+reviews.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'review-card';
+    card.innerHTML = `
+        <div class="review-header">
+            <img class="review-avatar" src="${r.avatar}" alt="${r.name}" loading="lazy" onerror="this.style.display='none'">
+            <div>
+                <strong>${r.name}</strong>
+                <div class="review-stars">${'⭐'.repeat(r.stars)}</div>
+            </div>
+        </div>
+        <div class="review-text">${r.text}</div>
+        <div class="review-product">📦 已购买：${r.product}</div>
+        ${r.images ? `<div class="review-images">${r.images.map(img => `<img src="${img}" alt="实拍图" loading="lazy" onclick="openLightbox('${img}')">`).join('')}</div>` : ''}
+    `;
+    reviewGrid.appendChild(card);
+});
+
+console.log('✅ ShopEase 深度优化版已就绪！');
+console.log('📋 功能：真实商品图片 | 详情弹窗+多图轮播 | 模拟支付流程 | 购物车管理 | 用户评价晒图');
+</script>
+</body>
+</html>
