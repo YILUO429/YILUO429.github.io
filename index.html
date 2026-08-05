@@ -1,924 +1,935 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ShopEase - 品质生活，尽在掌握</title>
-<style>
-/* ========== Reset & Base ========== */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root {
-  --primary:#ff4757;--primary-dark:#e84118;--secondary:#2ed573;--accent:#ffa502;
-  --dark:#2f3542;--gray:#747d8c;--light-gray:#f1f2f6;--white:#fff;
-  --shadow:0 2px 12px rgba(0,0,0,.08);--shadow-hover:0 8px 25px rgba(0,0,0,.15);
-  --radius:12px;--radius-sm:8px;--transition:all .3s cubic-bezier(0.4,0,0.2,1);
-  --max-width:1280px;
-  --wechat:#07c160;--qq:#12b7f5;
-}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f8f9fc;color:var(--dark);line-height:1.6;overflow-x:hidden}
-a{text-decoration:none;color:inherit}ul{list-style:none}img{max-width:100%;display:block}
-button{cursor:pointer;border:none;outline:none;font-family:inherit}
-.container{max-width:var(--max-width);margin:0 auto;padding:0 20px}
-.pointer{cursor:pointer}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>废墟拾光</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-/* ========== Top Bar ========== */
-.top-bar{background:var(--dark);color:#ccc;font-size:13px;padding:6px 0}
-.top-bar .container{display:flex;justify-content:space-between;align-items:center}
-.top-bar-links a,.top-bar-links span{margin-left:18px;cursor:pointer;transition:color .2s}
-.top-bar-links a:hover,.top-bar-links span:hover{color:var(--white)}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
 
-/* ========== Header ========== */
-.header{background:var(--white);box-shadow:var(--shadow);position:sticky;top:0;z-index:900}
-.header .container{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:20px}
-.logo{font-size:28px;font-weight:800;color:var(--primary);letter-spacing:-1px;white-space:nowrap}
-.logo span{color:var(--dark)}
-.search-box{flex:1;max-width:480px;display:flex;border:2px solid var(--primary);border-radius:30px;overflow:hidden}
-.search-box:focus-within{box-shadow:0 0 0 4px rgba(255,71,87,.15)}
-.search-box input{flex:1;border:none;padding:11px 18px;font-size:14px;outline:none;background:transparent}
-.search-box button{background:var(--primary);color:white;padding:11px 24px;font-size:14px;font-weight:600;transition:background .3s}
-.search-box button:hover{background:var(--primary-dark)}
-.header-icons{display:flex;gap:18px}
-.h-icon{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--dark);cursor:pointer;position:relative;transition:color .2s}
-.h-icon:hover{color:var(--primary)}
-.h-icon svg{width:24px;height:24px}
-.cart-badge{position:absolute;top:-8px;right:-6px;background:var(--primary);color:white;font-size:10px;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:700}
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 500px;
+            max-height: 900px;
+            background: #2a2a3e;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
 
-/* ========== Nav ========== */
-.nav{background:var(--white);border-top:1px solid var(--light-gray)}
-.nav .container{padding:0}
-.nav-list{display:flex}
-.nav-list>li>a{display:block;padding:13px 20px;font-size:14px;font-weight:500;color:var(--dark);transition:var(--transition);position:relative}
-.nav-list>li>a::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--primary);transition:width .3s}
-.nav-list>li>a:hover{color:var(--primary)}
-.nav-list>li>a:hover::after{width:60%}
-.nav-list>li:first-child>a{background:var(--primary);color:var(--white);font-weight:600}
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
 
-/* ========== Carousel ========== */
-.carousel-section{padding:30px 0 50px;background:var(--white)}
-.carousel-wrapper{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-hover)}
-.carousel-track{display:flex;transition:transform .6s cubic-bezier(.4,0,.2,1)}
-.carousel-slide{min-width:100%;position:relative;height:380px}
-.carousel-slide img{width:100%;height:100%;object-fit:cover}
-.carousel-slide .sc{position:absolute;top:50%;left:70px;transform:translateY(-50%);max-width:420px}
-@keyframes fadeUp{from{opacity:0;transform:translateY(-50%) translateY(30px)}to{opacity:1;transform:translateY(-50%)}}
-.sc .tag{display:inline-block;background:var(--primary);color:white;padding:4px 14px;border-radius:15px;font-size:12px;font-weight:600;margin-bottom:10px}
-.sc h3{font-size:34px;font-weight:800;color:white;line-height:1.2;margin-bottom:10px;text-shadow:0 2px 8px rgba(0,0,0,.2)}
-.sc p{color:rgba(255,255,255,.87);font-size:15px;margin-bottom:20px}
-.sc .btn{display:inline-block;background:white;color:var(--primary);padding:10px 28px;border-radius:25px;font-size:15px;font-weight:600;transition:var(--transition)}
-.sc .btn:hover{background:var(--primary);color:white;transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,71,87,.4)}
-.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.85);color:var(--dark);font-size:20px;display:flex;align-items:center;justify-content:center;transition:var(--transition);z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.carousel-btn:hover{background:white;box-shadow:0 4px 16px rgba(0,0,0,.2)}
-.carousel-btn.prev{left:16px}.carousel-btn.next{right:16px}
-.carousel-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
-.carousel-dots .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:var(--transition)}
-.carousel-dots .dot.active{background:white;width:28px;border-radius:5px}
+        .ui-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            padding: 20px;
+            text-align: center;
+        }
 
-/* ========== Features Bar ========== */
-.features-bar{background:white;padding:20px 0;border-bottom:1px solid var(--light-gray)}
-.features-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
-.feature-item{display:flex;align-items:center;justify-content:center;gap:10px;padding:8px}
-.feature-icon{width:44px;height:44px;background:var(--light-gray);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.feature-text strong{display:block;font-size:14px}
-.feature-text span{font-size:11px;color:var(--gray)}
+        .ui-screen.hidden {
+            display: none;
+        }
 
-/* ========== Product Card ========== */
-.section-pad{padding:50px 0}
-.sec-title{text-align:center;margin-bottom:36px}
-.sec-title h2{font-size:30px;font-weight:700;display:inline-block;position:relative}
-.sec-title h2::after{content:'';display:block;width:50px;height:3px;background:var(--primary);border-radius:2px;margin:8px auto 0}
-.sec-title p{color:var(--gray);margin-top:6px;font-size:14px}
-.product-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
-.product-card{background:white;border-radius:var(--radius);overflow:hidden;transition:var(--transition);box-shadow:var(--shadow);cursor:pointer;position:relative;border:1px solid transparent}
-.product-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-hover);border-color:var(--primary)}
-.product-img{height:210px;background:var(--light-gray);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.product-img .img-main{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.product-card:hover .img-main{transform:scale(1.06)}
-.product-img .img-hover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s}
-.product-card:hover .img-hover{opacity:1}
-.product-badge{position:absolute;top:10px;left:10px;font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px;z-index:2}
-.badge-hot{background:var(--primary);color:white}.badge-new{background:var(--secondary);color:white}.badge-discount{background:var(--accent);color:white}
-.product-actions{position:absolute;bottom:10px;right:10px;display:flex;flex-direction:column;gap:6px;opacity:0;transform:translateX(8px);transition:var(--transition);z-index:2}
-.product-card:hover .product-actions{opacity:1;transform:translateX(0)}
-.product-actions button{width:34px;height:34px;border-radius:50%;background:white;box-shadow:0 2px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;font-size:14px;transition:var(--transition)}
-.product-actions button:hover{background:var(--primary);color:white}
-.product-info{padding:14px}
-.product-info h4{font-size:13px;font-weight:500;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.product-price{display:flex;align-items:baseline;gap:6px}
-.price-c{font-size:18px;font-weight:700;color:var(--primary)}
-.price-o{font-size:12px;color:var(--gray);text-decoration:line-through}
-.product-rating{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:11px;color:var(--accent)}
-.product-rating span{color:var(--gray)}
-.btn-buy{display:block;width:100%;background:var(--primary);color:white;padding:10px 0;font-size:13px;font-weight:600;text-align:center;transition:background .3s;border-radius:0 0 var(--radius) var(--radius)}
-.btn-buy:hover{background:var(--primary-dark)}
+        .game-title {
+            font-size: 2.8em;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
 
-/* ============================================= */
-/* ========== LOGIN / REGISTER OVERLAY ========== */
-/* ============================================= */
-.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:5000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
-.login-overlay.active{opacity:1;pointer-events:all}
-.login-panel{background:white;border-radius:16px;width:92%;max-width:440px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);transform:translateY(30px);transition:transform .35s cubic-bezier(.175,.885,.32,1.275);position:relative}
-.login-overlay.active .login-panel{transform:translateY(0)}
-.lp-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--light-gray);font-size:16px;display:flex;align-items:center;justify-content:center;z-index:10;transition:var(--transition)}
-.lp-close:hover{background:var(--primary);color:white}
-.lp-tabs{display:flex;border-bottom:2px solid var(--light-gray)}
-.lp-tab{flex:1;padding:16px;text-align:center;font-size:16px;font-weight:600;color:var(--gray);cursor:pointer;transition:var(--transition);position:relative}
-.lp-tab.active{color:var(--primary)}
-.lp-tab.active::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:40px;height:3px;background:var(--primary);border-radius:2px}
-.lp-body{padding:28px 30px;display:none}
-.lp-body.active{display:block}
-.lp-title{font-size:22px;font-weight:700;margin-bottom:4px;text-align:center}
-.lp-sub{font-size:13px;color:var(--gray);text-align:center;margin-bottom:24px}
+        .game-subtitle {
+            color: #888;
+            font-size: 1em;
+            margin-bottom: 30px;
+        }
 
-/* SMS Login */
-.phone-input-wrap{display:flex;align-items:center;gap:0;border:2px solid #e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:12px;transition:border-color .3s}
-.phone-input-wrap:focus-within{border-color:var(--primary)}
-.phone-prefix{padding:12px 14px;font-weight:600;font-size:15px;border-right:1px solid #e0e0e0;background:#fafafa;color:var(--dark)}
-.phone-input-wrap input{flex:1;border:none;padding:12px 14px;font-size:15px;outline:none;background:transparent}
-.sms-row{display:flex;gap:10px;margin-bottom:12px}
-.sms-row input{flex:1;border:2px solid #e0e0e0;border-radius:10px;padding:12px 14px;font-size:15px;outline:none;transition:border-color .3s}
-.sms-row input:focus{border-color:var(--primary)}
-.sms-btn{padding:12px 16px;background:var(--primary);color:white;border-radius:10px;font-size:13px;font-weight:600;white-space:nowrap;transition:background .3s}
-.sms-btn:disabled{background:#ccc;cursor:not-allowed}
-.sms-btn:hover:not(:disabled){background:var(--primary-dark)}
-.login-submit{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border-radius:10px;font-size:16px;font-weight:700;transition:var(--transition);box-shadow:0 4px 14px rgba(255,71,87,.3);margin-top:8px}
-.login-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,71,87,.4)}
-.third-login{text-align:center;margin-top:24px;position:relative}
-.third-login::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:#e0e0e0}
-.third-login span{position:relative;background:white;padding:0 16px;font-size:12px;color:var(--gray)}
-.third-icons{display:flex;justify-content:center;gap:24px;margin-top:18px}
-.third-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:var(--transition);box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.third-icon:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(0,0,0,.15)}
-.icon-wechat{background:#e8fce8;color:var(--wechat)}.icon-wechat:hover{background:var(--wechat);color:white}
-.icon-qq{background:#e8f0ff;color:var(--qq)}.icon-qq:hover{background:var(--qq);color:white}
-.icon-apple{background:#f1f1f1;color:#333}.icon-apple:hover{background:#333;color:white}
-.agreement{text-align:center;font-size:11px;color:var(--gray);margin-top:16px}
-.agreement a{color:var(--primary)}
+        .rules {
+            color: #ccc;
+            text-align: left;
+            max-width: 360px;
+            margin: 20px 0;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
 
-/* Register Form */
-.reg-form input{width:100%;border:2px solid #e0e0e0;border-radius:10px;padding:12px 14px;font-size:15px;outline:none;margin-bottom:12px;transition:border-color .3s}
-.reg-form input:focus{border-color:var(--primary)}
-.reg-agreement{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray);margin-bottom:14px}
-.reg-agreement input[type=checkbox]{width:auto}
+        .rules h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
 
-/* ============================================= */
-/* ========== USER STATE IN TOP BAR ========== */
-/* ============================================= */
-.logged-in .not-logged{display:none}
-.not-logged-in .is-logged{display:none}
+        .rules ul {
+            list-style: none;
+            padding-left: 0;
+        }
 
-/* ============================================= */
-/* ========== SLIDE PANELS (我的/收藏/购物车) ========== */
-/* ============================================= */
-.slide-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:4000;opacity:0;pointer-events:none;transition:opacity .35s}
-.slide-overlay.active{opacity:1;pointer-events:all}
-.slide-panel{position:fixed;top:0;right:0;width:440px;max-width:92vw;height:100vh;background:white;z-index:4001;transform:translateX(110%);transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-4px 0 30px rgba(0,0,0,.15)}
-.slide-overlay.active .slide-panel{transform:translateX(0)}
-.sp-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--light-gray);flex-shrink:0}
-.sp-header h3{font-size:18px;font-weight:700}
-.sp-close{width:32px;height:32px;border-radius:50%;background:var(--light-gray);font-size:16px;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
-.sp-close:hover{background:var(--primary);color:white}
-.sp-body{flex:1;overflow-y:auto;padding:20px}
-.sp-empty{text-align:center;padding:60px 20px;color:var(--gray)}
-.sp-empty-icon{font-size:56px;margin-bottom:16px;opacity:.5}
-.sp-empty h4{font-size:17px;margin-bottom:6px;color:var(--dark)}
-.sp-empty p{font-size:13px}
+        .rules li {
+            margin: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
 
-/* Cart Items */
-.cart-item{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--light-gray);align-items:center}
-.cart-item-img{width:80px;height:80px;border-radius:var(--radius-sm);object-fit:cover;flex-shrink:0;background:var(--light-gray)}
-.cart-item-info{flex:1;min-width:0}
-.cart-item-info h4{font-size:14px;font-weight:500;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.cart-item-info .ci-price{font-size:16px;font-weight:700;color:var(--primary)}
-.cart-qty-row{display:flex;align-items:center;gap:10px;margin-top:8px}
-.qty-ctrl{display:flex;align-items:center;border:1px solid #ddd;border-radius:6px;overflow:hidden}
-.qty-ctrl button{width:28px;height:28px;background:var(--light-gray);font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.qty-ctrl button:hover{background:#ddd}
-.qty-ctrl .qv{width:36px;text-align:center;font-size:14px;font-weight:600}
-.cart-item-del{color:var(--gray);cursor:pointer;font-size:18px;padding:6px;transition:color .2s}
-.cart-item-del:hover{color:var(--primary)}
-.cart-footer{padding:20px;border-top:1px solid var(--light-gray);flex-shrink:0}
-.cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
-.cart-total-label{font-size:14px;color:var(--gray)}
-.cart-total-price{font-size:24px;font-weight:700;color:var(--primary)}
-.cart-total-price .sym{font-size:16px}
-.cart-checkout{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border-radius:25px;font-size:16px;font-weight:700;transition:var(--transition);box-shadow:0 4px 14px rgba(255,71,87,.3)}
-.cart-checkout:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,71,87,.4)}
-.cart-checkout:disabled{background:#ccc;cursor:not-allowed;box-shadow:none}
+        .rules li::before {
+            content: "•";
+            color: #ffd700;
+            position: absolute;
+            left: 0;
+        }
 
-/* Favorites */
-.fav-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--light-gray);align-items:center}
-.fav-item-img{width:90px;height:90px;border-radius:var(--radius-sm);object-fit:cover;flex-shrink:0;background:var(--light-gray);cursor:pointer}
-.fav-item-info{flex:1;min-width:0}
-.fav-item-info h4{font-size:14px;font-weight:500;margin-bottom:6px;cursor:pointer;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.fav-item-info h4:hover{color:var(--primary)}
-.fav-price{font-size:16px;font-weight:700;color:var(--primary)}
-.fav-actions{display:flex;gap:8px;margin-top:8px}
-.fav-actions button{padding:7px 16px;border-radius:18px;font-size:12px;font-weight:600;transition:var(--transition)}
-.fav-buy{background:var(--primary);color:white}.fav-buy:hover{background:var(--primary-dark)}
-.fav-del{background:var(--light-gray);color:var(--gray)}.fav-del:hover{background:#fee;color:var(--primary)}
+        .mode-selector {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-/* User Center (我的) */
-.user-header-section{background:linear-gradient(135deg,var(--primary),#ff6b81);margin:-20px -20px 20px;padding:28px 20px 24px;color:white;text-align:center;border-radius:0}
-.user-avatar{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;border:3px solid rgba(255,255,255,.5)}
-.user-name{font-size:20px;font-weight:700;margin-bottom:4px}
-.user-id{font-size:12px;opacity:.7}
-.user-stats{display:flex;justify-content:space-around;padding:16px 0;background:white;border-radius:var(--radius);margin-bottom:16px;box-shadow:var(--shadow)}
-.user-stat{text-align:center;cursor:pointer;transition:var(--transition);padding:4px 12px}
-.user-stat:hover{color:var(--primary)}
-.user-stat .num{font-size:22px;font-weight:700}
-.user-stat .label{font-size:11px;color:var(--gray);margin-top:2px}
-.user-menu{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
-.user-menu-item{display:flex;align-items:center;gap:12px;padding:15px 18px;border-bottom:1px solid var(--light-gray);cursor:pointer;transition:background .2s;font-size:14px}
-.user-menu-item:last-child{border-bottom:none}
-.user-menu-item:hover{background:var(--light-gray)}
-.user-menu-item .mi-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.user-menu-item .mi-arrow{margin-left:auto;color:var(--gray)}
-.um-orange{background:#fff3e0}.um-blue{background:#e3f2fd}.um-green{background:#e8f5e9}.um-purple{background:#f3e5f5}.um-red{background:#ffebee}.um-cyan{background:#e0f7fa}
-.logout-btn{width:100%;padding:12px;background:white;color:var(--gray);border-radius:var(--radius);font-size:14px;box-shadow:var(--shadow);transition:var(--transition)}
-.logout-btn:hover{background:#fee;color:var(--primary)}
+        .mode-btn {
+            padding: 12px 20px;
+            border: 2px solid #ffd700;
+            background: transparent;
+            color: #ffd700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
 
-/* ============================================= */
-/* ========== PRODUCT DETAIL MODAL ========== */
-/* ============================================= */
-.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:5000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
-.detail-overlay.active{opacity:1;pointer-events:all}
-.detail-modal{background:white;border-radius:16px;width:92%;max-width:960px;max-height:90vh;overflow-y:auto;transform:translateY(30px) scale(.97);transition:transform .4s cubic-bezier(.175,.885,.32,1.275);position:relative}
-.detail-overlay.active .detail-modal{transform:translateY(0) scale(1)}
-.dm-close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:var(--light-gray);font-size:18px;display:flex;align-items:center;justify-content:center;z-index:10;transition:var(--transition)}
-.dm-close:hover{background:var(--primary);color:white}
-.dm-body{display:grid;grid-template-columns:1fr 1fr;min-height:480px}
-.dm-gallery{background:#f5f5f5;padding:36px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.dm-gallery .g-img{width:100%;max-height:340px;object-fit:contain;border-radius:var(--radius);transition:opacity .3s;cursor:zoom-in}
-.dm-thumbs{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:center}
-.dm-thumb{width:60px;height:60px;border-radius:var(--radius-sm);object-fit:cover;cursor:pointer;border:2px solid transparent;transition:var(--transition);opacity:.6}
-.dm-thumb:hover,.dm-thumb.active{border-color:var(--primary);opacity:1}
-.dm-thumb-wrap{position:relative}
-.dm-thumb-wrap span{position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,.5);color:white;font-size:9px;padding:1px 5px;border-radius:4px;pointer-events:none}
-.dm-info{padding:36px}
-.dm-info .cat{font-size:11px;color:var(--primary);text-transform:uppercase;font-weight:600;letter-spacing:1px;margin-bottom:6px}
-.dm-info h2{font-size:22px;font-weight:700;margin-bottom:14px;line-height:1.3}
-.dm-price-block{display:flex;align-items:baseline;gap:10px;background:linear-gradient(135deg,#fff5f5,#fff0f0);padding:14px 18px;border-radius:var(--radius-sm);margin-bottom:18px}
-.dm-price-block .bp{font-size:32px;font-weight:800;color:var(--primary)}
-.dm-price-block .op{font-size:14px;color:var(--gray);text-decoration:line-through}
-.dm-price-block .save{font-size:12px;color:var(--secondary);font-weight:600;margin-left:auto}
-.dm-specs h4{font-size:13px;color:var(--gray);margin-bottom:8px}
-.dm-specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
-.dm-spec{background:var(--light-gray);padding:8px 12px;border-radius:var(--radius-sm);font-size:12px;display:flex;justify-content:space-between}
-.dm-spec .sl{color:var(--gray)}.dm-spec .sv{font-weight:600}
-.dm-desc{font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:20px;flex:1}
-.dm-qty-row{display:flex;align-items:center;gap:14px;margin-bottom:20px}
-.dm-qty-row span{font-size:13px;color:var(--gray)}
-.dm-qty-row .qty-ctrl{border:1px solid #ddd;border-radius:6px;overflow:hidden;display:flex}
-.dm-qty-row .qty-ctrl button{width:32px;height:32px;background:var(--light-gray);font-size:16px;display:flex;align-items:center;justify-content:center}
-.dm-qty-row .qty-ctrl .qv{width:44px;text-align:center;font-weight:600;font-size:15px}
-.dm-btns{display:flex;gap:10px}
-.dm-btn-cart{flex:1;padding:13px;background:white;border:2px solid var(--primary);color:var(--primary);border-radius:25px;font-size:14px;font-weight:600;transition:var(--transition)}
-.dm-btn-cart:hover{background:var(--primary);color:white}
-.dm-btn-buy{flex:1;padding:13px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border-radius:25px;font-size:14px;font-weight:600;transition:var(--transition);box-shadow:0 4px 14px rgba(255,71,87,.3)}
-.dm-btn-buy:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,71,87,.4)}
+        .mode-btn:hover, .mode-btn.active {
+            background: #ffd700;
+            color: #1a1a2e;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
 
-/* Lightbox */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:6000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
-.lightbox.active{opacity:1;pointer-events:all}
-.lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:8px}
-.lightbox-close{position:absolute;top:24px;right:36px;color:white;font-size:32px;cursor:pointer}
+        .start-btn {
+            padding: 15px 50px;
+            font-size: 1.3em;
+            background: #ffd700;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        }
 
-/* ============================================= */
-/* ========== PAYMENT MODAL ========== */
-/* ============================================= */
-.pay-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:5500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
-.pay-overlay.active{opacity:1;pointer-events:all}
-.pay-modal{background:white;border-radius:16px;width:92%;max-width:480px;max-height:90vh;overflow-y:auto;transform:translateY(30px) scale(.97);transition:transform .4s cubic-bezier(.175,.885,.32,1.275);position:relative}
-.pay-overlay.active .pay-modal{transform:translateY(0) scale(1)}
-.pay-header{background:linear-gradient(135deg,var(--dark),#1e1e2d);color:white;padding:24px 28px;text-align:center;border-radius:16px 16px 0 0}
-.pay-header h3{font-size:20px;margin-bottom:2px}
-.pay-header p{font-size:12px;opacity:.7}
-.pay-body{padding:22px 28px}
-.pay-summary{background:var(--light-gray);border-radius:var(--radius-sm);padding:16px;margin-bottom:20px}
-.pay-summary .sr{display:flex;justify-content:space-between;padding:5px 0;font-size:13px}
-.pay-summary .st{border-top:1px dashed #ddd;margin-top:6px;padding-top:10px;font-size:17px;font-weight:700;color:var(--primary)}
-.pay-methods h4{font-size:13px;color:var(--gray);margin-bottom:10px}
-.pay-method{display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid var(--light-gray);border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);margin-bottom:8px}
-.pay-method:hover,.pay-method.selected{border-color:var(--primary);background:#fff5f5}
-.pay-method .pm-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.pm-wx{background:#e8fce8}.pm-zfb{background:#e8f0ff}.pm-card{background:#fff8e8}
-.pay-method .pm-info{flex:1}.pay-method .pm-name{font-weight:600;font-size:13px}.pay-method .pm-desc{font-size:11px;color:var(--gray)}
-.pay-method .pm-check{width:20px;height:20px;border-radius:50%;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;transition:var(--transition)}
-.pay-method.selected .pm-check{background:var(--primary);border-color:var(--primary)}
-.pay-method.selected .pm-check::after{content:'✓';color:white;font-size:11px;font-weight:700}
-.btn-confirm-pay{width:100%;padding:15px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border-radius:25px;font-size:16px;font-weight:700;transition:var(--transition);box-shadow:0 4px 14px rgba(255,71,87,.3);letter-spacing:1px}
-.btn-confirm-pay:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,71,87,.4)}
-.pay-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.2);color:white;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.pay-close:hover{background:rgba(255,255,255,.35)}
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+        }
 
-/* Processing */
-.proc-screen{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:5800;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s}
-.proc-screen.active{opacity:1;pointer-events:all}
-.proc-spinner{width:60px;height:60px;border:4px solid rgba(255,255,255,.15);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:20px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.proc-text{color:white;font-size:17px;font-weight:600;margin-bottom:6px}
-.proc-sub{color:rgba(255,255,255,.55);font-size:12px}
+        .score-display {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: bold;
+            z-index: 5;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
 
-/* Success */
-.succ-screen{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:5800;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .35s}
-.succ-screen.active{opacity:1;pointer-events:all}
-.succ-icon{width:72px;height:72px;border-radius:50%;background:var(--secondary);display:flex;align-items:center;justify-content:center;font-size:36px;color:white;margin-bottom:16px;animation:pop .5s cubic-bezier(.175,.885,.32,1.275)}
-@keyframes pop{0%{transform:scale(0)}80%{transform:scale(1.1)}to{transform:scale(1)}}
-.succ-text{color:white;font-size:20px;font-weight:700;margin-bottom:4px}
-.succ-sub{color:rgba(255,255,255,.55);font-size:13px;margin-bottom:26px}
-.succ-btn{padding:10px 36px;background:white;color:var(--dark);border-radius:25px;font-size:14px;font-weight:600;transition:var(--transition)}
-.succ-btn:hover{background:var(--primary);color:white}
+        .high-score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            font-size: 0.9em;
+            z-index: 5;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
 
-/* Toast */
-.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-120px);background:var(--dark);color:white;padding:12px 26px;border-radius:25px;font-size:13px;z-index:9999;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);white-space:pre-line}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{background:var(--secondary)}
+        .shield-indicator {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            color: #00ff88;
+            font-size: 0.9em;
+            z-index: 5;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
 
-/* ========== Responsive ========== */
-@media(max-width:1200px){.product-grid{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:992px){
-  .product-grid{grid-template-columns:repeat(3,1fr)}.features-grid{grid-template-columns:repeat(2,1fr)}
-  .carousel-slide{height:280px}.sc h3{font-size:24px}.dm-body{grid-template-columns:1fr}
-}
-@media(max-width:768px){
-  .product-grid{grid-template-columns:repeat(2,1fr)}.carousel-slide{height:220px}.sc{left:30px}.sc p{display:none}
-  .search-box{display:none}
-}
+        .final-score {
+            font-size: 2em;
+            color: #ffd700;
+            margin: 15px 0;
+        }
 
-/* ========== Order History Sub-screen ========== */
-.order-tabs{display:flex;gap:0;margin-bottom:16px;border-bottom:1px solid var(--light-gray)}
-.order-tab{flex:1;text-align:center;padding:10px 0;font-size:13px;color:var(--gray);cursor:pointer;transition:var(--transition);border-bottom:2px solid transparent}
-.order-tab:hover{color:var(--primary)}
-.order-tab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
-.order-card{background:white;border-radius:var(--radius-sm);box-shadow:var(--shadow);padding:14px;margin-bottom:12px}
-.order-card .oh{display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:10px}
-.order-card .oi{display:flex;gap:12px;align-items:center}
-.order-card .oi img{width:60px;height:60px;border-radius:8px;object-fit:cover}
-.order-card .oi .od{flex:1;font-size:13px}
-.order-card .oprice{font-size:14px;font-weight:600;color:var(--primary);text-align:right}
-.order-card .ostatus{font-size:12px;margin-top:4px}
-</style>
+        .result-message {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .result-message.success {
+            color: #00ff88;
+        }
+
+        .result-message.fail {
+            color: #ff6b6b;
+        }
+
+        .new-record {
+            color: #ffd700;
+            font-size: 1.3em;
+            animation: pulse 1s infinite;
+            margin: 10px 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .best-score {
+            color: #888;
+            font-size: 1em;
+            margin: 5px 0;
+        }
+
+        .restart-btn {
+            padding: 12px 40px;
+            font-size: 1.1em;
+            background: #ffd700;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 25px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            padding: 10px 30px;
+            font-size: 1em;
+            background: transparent;
+            color: #888;
+            border: 1px solid #888;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .stats {
+            color: #ccc;
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+
+        .control-hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85em;
+            z-index: 5;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+            #game-container {
+                border-radius: 0;
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+            .game-title {
+                font-size: 2.2em;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="score-display">得分: <span id="currentScore">0</span>/<span id="targetScore">30</span></div>
+        <div class="high-score">最高分: <span id="highScore">0</span></div>
+        <div class="shield-indicator" id="shieldIndicator" style="display: none;">🛡️ 护盾</div>
+        <div class="control-hint" id="controlHint"></div>
 
-<!-- ========== TOP BAR ========== -->
-<div class="top-bar" id="topBar">
-  <div class="container">
-    <div>🔥 全场低至5折，满99元包邮！</div>
-    <div class="top-bar-links">
-      <span class="not-logged" onclick="openLogin()">登录</span>
-      <span class="not-logged" onclick="openLogin('register')">注册</span>
-      <span class="is-logged" id="topbarName" style="display:none">你好，用户</span>
-      <span class="is-logged" onclick="logout()" style="display:none">退出</span>
-      <a href="#">客户服务</a>
-    </div>
-  </div>
-</div>
+        <div id="startScreen" class="ui-screen">
+            <h1 class="game-title">废墟拾光</h1>
+            <p class="game-subtitle">轻度末世收集 · 单手即可游玩</p>
+            
+            <div class="rules">
+                <h3>游戏规则</h3>
+                <ul>
+                    <li>收集金色能量晶石，累计分数通关</li>
+                    <li>躲开腐蚀黑雾和高空落石，触碰即败</li>
+                    <li>金色晶石：+1分，闪耀大晶：+5分</li>
+                    <li>护盾晶片：抵挡一次黑雾撞击</li>
+                    <li>每开局3次，免费赠送一次护盾</li>
+                </ul>
+            </div>
 
-<!-- ========== HEADER ========== -->
-<header class="header">
-  <div class="container" style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:20px">
-    <a href="#" class="logo">Shop<span>Ease</span></a>
-    <div class="search-box"><input type="text" placeholder="搜索你想要的商品..."><button>🔍 搜索</button></div>
-    <div class="header-icons">
-      <div class="h-icon" onclick="openUserCenter()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>我的</div>
-      <div class="h-icon" onclick="openFavorites()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>收藏</div>
-      <div class="h-icon" onclick="openCart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-badge" id="cartBadge" style="display:none">0</span>购物车</div>
-    </div>
-  </div>
-</header>
+            <div>
+                <p style="color: #ccc; margin-bottom: 10px;">选择游戏模式</p>
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="normal">标准模式</button>
+                    <button class="mode-btn" data-mode="speed">极速模式</button>
+                    <button class="mode-btn" data-mode="collection">收集专项</button>
+                </div>
+            </div>
 
-<!-- ========== NAV ========== -->
-<nav class="nav"><div class="container"><ul class="nav-list">
-  <li><a href="#">📂 全部分类</a></li><li><a href="#">首页</a></li><li><a href="#">今日秒杀</a></li>
-  <li><a href="#">品牌特卖</a></li><li><a href="#">新品上市</a></li><li><a href="#">热销榜单</a></li><li><a href="#">优惠券</a></li>
-</ul></div></nav>
-
-<!-- ========== CAROUSEL ========== -->
-<section class="carousel-section"><div class="container">
-  <div class="carousel-wrapper" id="carousel">
-    <div class="carousel-track" id="carouselTrack">
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1240&h=380&fit=crop" alt=""><div class="sc"><span class="tag">🔥 限时活动</span><h3>年终大促<br>全场低至5折</h3><p>精选好物超值购，限时秒杀不容错过</p><a href="#" class="btn">立即抢购 →</a></div></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=1240&h=380&fit=crop" alt=""><div class="sc"><span class="tag">✨ 新品首发</span><h3>旗舰新品<br>震撼上市</h3><p>预约即享专属优惠，限量赠品先到先得</p><a href="#" class="btn">了解详情 →</a></div></div>
-      <div class="carousel-slide"><img src="https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=1240&h=380&fit=crop" alt=""><div class="sc"><span class="tag">🎯 品牌精选</span><h3>数码好物节<br>满300减50</h3><p>耳机、音响、智能设备一站购齐</p><a href="#" class="btn">逛一逛 →</a></div></div>
-    </div>
-    <button class="carousel-btn prev" id="carPrev">‹</button><button class="carousel-btn next" id="carNext">›</button>
-    <div class="carousel-dots" id="carDots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
-  </div>
-</div></section>
-
-<!-- ========== FEATURES ========== -->
-<section class="features-bar"><div class="container"><div class="features-grid">
-  <div class="feature-item"><div class="feature-icon">🚚</div><div class="feature-text"><strong>免费配送</strong><span>满99元包邮</span></div></div>
-  <div class="feature-item"><div class="feature-icon">🔄</div><div class="feature-text"><strong>7天退换</strong><span>无忧购物保障</span></div></div>
-  <div class="feature-item"><div class="feature-icon">🛡️</div><div class="feature-text"><strong>正品保障</strong><span>品质假一赔十</span></div></div>
-  <div class="feature-item"><div class="feature-icon">💬</div><div class="feature-text"><strong>在线客服</strong><span>24小时全天候</span></div></div>
-</div></div></section>
-
-<!-- ========== PRODUCT GRID ========== -->
-<section class="section-pad"><div class="container">
-  <div class="sec-title"><h2>🔥 热门商品</h2><p>大家都在买，精选热销单品推荐</p></div>
-  <div class="product-grid" id="productGrid"></div>
-</div></section>
-
-<!-- ========== FOOTER ========== -->
-<footer style="background:var(--dark);color:#aaa;padding:36px 0 20px;text-align:center;font-size:13px">
-  <div class="container"><p>&copy; 2026 ShopEase. All rights reserved. | 仅用于演示</p></div>
-</footer>
-
-<!-- ========== TOAST ========== -->
-<div class="toast" id="toast"></div>
-
-<!-- ============================================= -->
-<!-- ========== LOGIN / REGISTER OVERLAY ========== -->
-<!-- ============================================= -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-panel">
-    <button class="lp-close" onclick="closeLogin()">✕</button>
-    <div class="lp-tabs">
-      <div class="lp-tab active" data-tab="login" onclick="switchLoginTab('login')">登录</div>
-      <div class="lp-tab" data-tab="register" onclick="switchLoginTab('register')">注册</div>
-    </div>
-
-    <!-- Login Tab -->
-    <div class="lp-body active" id="lpLogin">
-      <div class="lp-title">欢迎回来</div>
-      <div class="lp-sub">使用手机号登录 ShopEase</div>
-      <div class="phone-input-wrap">
-        <span class="phone-prefix">+86</span>
-        <input type="tel" id="phoneInput" placeholder="请输入手机号码" maxlength="11">
-      </div>
-      <div class="sms-row">
-        <input type="text" id="smsInput" placeholder="短信验证码" maxlength="6">
-        <button class="sms-btn" id="smsBtn" onclick="sendSMS()">获取验证码</button>
-      </div>
-      <button class="login-submit" onclick="doLogin()">登录</button>
-      <div class="third-login"><span>其他方式登录</span></div>
-      <div class="third-icons">
-        <div class="third-icon icon-wechat" onclick="thirdLogin('微信')" title="微信登录">💚</div>
-        <div class="third-icon icon-qq" onclick="thirdLogin('QQ')" title="QQ登录">💙</div>
-        <div class="third-icon icon-apple" onclick="thirdLogin('Apple')" title="Apple登录">🍎</div>
-      </div>
-      <div class="agreement">登录即同意 <a href="#">用户协议</a> 和 <a href="#">隐私政策</a></div>
-    </div>
-
-    <!-- Register Tab -->
-    <div class="lp-body" id="lpRegister">
-      <div class="lp-title">创建账号</div>
-      <div class="lp-sub">注册 ShopEase，开启品质购物之旅</div>
-      <div class="reg-form">
-        <input type="tel" id="regPhone" placeholder="手机号码" maxlength="11">
-        <div class="sms-row">
-          <input type="text" id="regSms" placeholder="短信验证码" maxlength="6">
-          <button class="sms-btn" id="regSmsBtn" onclick="sendRegSMS()">获取验证码</button>
+            <button class="start-btn" id="startButton">开始游戏</button>
         </div>
-        <input type="password" id="regPwd" placeholder="设置密码（6-20位）">
-        <input type="password" id="regPwd2" placeholder="确认密码">
-        <input type="text" id="regNickname" placeholder="昵称（选填）">
-        <label class="reg-agreement"><input type="checkbox" id="regAgree" checked> 我已阅读并同意 <a href="#" style="color:var(--primary)">用户协议</a> 和 <a href="#" style="color:var(--primary)">隐私政策</a></label>
-        <button class="login-submit" onclick="doRegister()">立即注册</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- ============================================= -->
-<!-- ========== MY ACCOUNT (我的) SLIDE PANEL ========== -->
-<!-- ============================================= -->
-<div class="slide-overlay" id="userOverlay" onclick="if(event.target===this)closeUserCenter()">
-  <div class="slide-panel" id="userPanel"><div class="sp-body" id="userBody"></div></div>
-</div>
-
-<!-- ============================================= -->
-<!-- ========== FAVORITES (收藏) SLIDE PANEL ========== -->
-<!-- ============================================= -->
-<div class="slide-overlay" id="favOverlay" onclick="if(event.target===this)closeFavorites()">
-  <div class="slide-panel"><div class="sp-header"><h3>❤️ 我的收藏</h3><button class="sp-close" onclick="closeFavorites()">✕</button></div><div class="sp-body" id="favBody"></div></div>
-</div>
-
-<!-- ============================================= -->
-<!-- ========== CART (购物车) SLIDE PANEL ========== -->
-<!-- ============================================= -->
-<div class="slide-overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
-  <div class="slide-panel"><div class="sp-header"><h3>🛒 购物车</h3><button class="sp-close" onclick="closeCart()">✕</button></div><div class="sp-body" id="cartBody"></div><div class="cart-footer" id="cartFooter"></div></div>
-</div>
-
-<!-- ============================================= -->
-<!-- ========== PRODUCT DETAIL MODAL ========== -->
-<!-- ============================================= -->
-<div class="detail-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()">
-  <div class="detail-modal"><button class="dm-close" onclick="closeDetail()">✕</button><div class="dm-body"><div class="dm-gallery" id="dmGallery"></div><div class="dm-info" id="dmInfo"></div></div></div>
-</div>
-
-<!-- ========== LIGHTBOX ========== -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()"><span class="lightbox-close">✕</span><img src="" alt="" id="lbImg"></div>
-
-<!-- ============================================= -->
-<!-- ========== PAYMENT MODAL ========== -->
-<!-- ============================================= -->
-<div class="pay-overlay" id="payOverlay" onclick="if(event.target===this)closePay()">
-  <div class="pay-modal">
-    <button class="pay-close" onclick="closePay()">✕</button>
-    <div class="pay-header"><h3>💳 确认订单</h3><p>请选择支付方式完成付款</p></div>
-    <div class="pay-body">
-      <div class="pay-summary" id="paySummary"></div>
-      <div class="pay-methods">
-        <h4>选择支付方式</h4>
-        <div class="pay-method selected" data-method="wechat" onclick="selectPayMethod('wechat',this)"><div class="pm-icon pm-wx">💚</div><div class="pm-info"><div class="pm-name">微信支付</div><div class="pm-desc">推荐安装微信的用户使用</div></div><div class="pm-check"></div></div>
-        <div class="pay-method" data-method="alipay" onclick="selectPayMethod('alipay',this)"><div class="pm-icon pm-zfb">💙</div><div class="pm-info"><div class="pm-name">支付宝</div><div class="pm-desc">安全快捷的在线支付</div></div><div class="pm-check"></div></div>
-        <div class="pay-method" data-method="card" onclick="selectPayMethod('card',this)"><div class="pm-icon pm-card">💛</div><div class="pm-info"><div class="pm-name">银行卡支付</div><div class="pm-desc">支持主流银行储蓄卡/信用卡</div></div><div class="pm-check"></div></div>
-      </div>
-      <button class="btn-confirm-pay" id="btnPay">确认支付 ¥<span id="btnPayAmt">0.00</span></button>
-    </div>
-  </div>
-</div>
-
-<!-- Processing -->
-<div class="proc-screen" id="procScreen"><div class="proc-spinner"></div><div class="proc-text">正在支付中...</div><div class="proc-sub">请勿关闭此页面</div></div>
-<!-- Success -->
-<div class="succ-screen" id="succScreen"><div class="succ-icon">✓</div><div class="succ-text">支付成功！</div><div class="succ-sub" id="succMsg">订单号生成中...</div><button class="succ-btn" onclick="closeSucc()">继续购物</button></div>
-
-<script>
-// ==================== DATA ====================
-const products = [
-  {id:1,name:'iPhone 15 Pro Max 256GB',cat:'智能手机',price:8999,op:9999,rating:4.9,sales:25480,badge:'hot',images:['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&fit=crop','https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600&fit=crop','https://images.unsplash.com/photo-1510557880182-3d4d3c55335c?w=600&fit=crop','https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600&fit=crop'],labels:['正面展示','侧面展示','包装盒','实拍场景'],specs:{'屏幕':'6.7英寸 OLED','芯片':'A17 Pro','存储':'256GB','电池':'4422mAh','摄像头':'4800万像素','重量':'221g'},desc:'iPhone 15 Pro Max 采用钛金属设计，配备 A17 Pro 芯片，带来前所未有的性能表现。'},
-  {id:2,name:'MacBook Air M3 15英寸',cat:'笔记本电脑',price:10499,op:11999,rating:4.8,sales:18320,badge:'new',images:['https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&fit=crop','https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&fit=crop','https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&fit=crop','https://images.unsplash.com/photo-1468436139062-f60a71c5c892?w=600&fit=crop'],labels:['正面展示','侧面展示','办公场景','实拍'],specs:{'屏幕':'15.3英寸','芯片':'Apple M3','内存':'8GB','存储':'256GB SSD','重量':'1.51kg','续航':'18小时'},desc:'MacBook Air M3 超薄轻便，15.3英寸大屏和 M3 芯片强劲性能。'},
-  {id:3,name:'AirPods Pro 第二代',cat:'耳机音箱',price:1699,op:1999,rating:4.9,sales:52100,badge:'discount',images:['https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=600&fit=crop','https://images.unsplash.com/photo-1631867675767-e5a77878c0ea?w=600&fit=crop','https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?w=600&fit=crop','https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&fit=crop'],labels:['正面','侧面','佩戴展示','充电盒'],specs:{'芯片':'Apple H2','降噪':'自适应降噪','防水':'IPX4','续航':'30小时','充电':'USB-C','重量':'5.3g'},desc:'AirPods Pro 第二代搭载 H2 芯片，主动降噪效果提升2倍。'},
-  {id:4,name:'Apple Watch Series 9',cat:'智能穿戴',price:2999,op:3499,rating:4.7,sales:15680,badge:'hot',images:['https://images.unsplash.com/photo-1546868871-af0de0ae72be?w=600&fit=crop','https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600&fit=crop','https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600&fit=crop','https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=600&fit=crop'],labels:['正面','侧面','佩戴','运动'],specs:{'芯片':'S9 SiP','屏幕':'Retina','健康':'血氧+ECG','防水':'50米','续航':'18h','重量':'51.5g'},desc:'Apple Watch S9 搭载全新S9芯片，全面的健康监测功能。'},
-  {id:5,name:'Sony WH-1000XM5',cat:'耳机音箱',price:2299,op:2999,rating:4.8,sales:9870,badge:'discount',images:['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&fit=crop','https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600&fit=crop','https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&fit=crop','https://images.unsplash.com/photo-1487215078519-e21cc028cb29?w=600&fit=crop'],labels:['正面','折叠','佩戴','办公'],specs:{'驱动':'30mm','降噪':'双芯片','续航':'30h','快充':'3min=3h','重量':'250g','蓝牙':'5.2/LDAC'},desc:'Sony WH-1000XM5 8个麦克风精准降噪，极致静谧聆听体验。'},
-  {id:6,name:'iPad Air M2 11英寸',cat:'笔记本电脑',price:4399,op:4799,rating:4.8,sales:12340,badge:'new',images:['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&fit=crop','https://images.unsplash.com/photo-1561154464-82e9adf32764?w=600&fit=crop','https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&fit=crop','https://images.unsplash.com/photo-1467949576161-6ce8e2e3e27f?w=600&fit=crop'],labels:['正面','侧面','创作','配件'],specs:{'屏幕':'11英寸','芯片':'M2','存储':'128GB','摄像头':'12MP','重量':'462g','配件':'Pencil'},desc:'iPad Air M2 轻薄便携，绘画、笔记、办公轻松胜任。'},
-  {id:7,name:'DJI Mini 4 Pro',cat:'相机影像',price:4788,op:5288,rating:4.9,sales:8560,badge:'hot',images:['https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&fit=crop','https://images.unsplash.com/photo-1506947411486-a56738267384?w=600&fit=crop','https://images.unsplash.com/photo-1527977966376-1c8408f9f108?w=600&fit=crop','https://images.unsplash.com/photo-1533309907656-7b1c2ee56ddf?w=600&fit=crop'],labels:['正面','飞行','航拍','实拍'],specs:{'重量':'249g','CMOS':'1/1.3"','视频':'4K/100fps','续航':'34min','图传':'O4 20km','避障':'全向'},desc:'DJI Mini 4 Pro 仅249g，无需登记。旗舰影像系统。'},
-  {id:8,name:'Samsung Galaxy S24 Ultra',cat:'智能手机',price:8999,op:10199,rating:4.7,sales:11230,badge:'discount',images:['https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600&fit=crop','https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&fit=crop','https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&fit=crop','https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&fit=crop'],labels:['正面','侧面','S Pen','实拍'],specs:{'屏幕':'6.8" AMOLED','芯片':'骁龙8 Gen3','存储':'256GB','摄像头':'200MP','电池':'5000mAh','S Pen':'内置'},desc:'Galaxy S24 Ultra 配备AI助手，200MP超清四摄和内置S Pen。'},
-  {id:9,name:'Nintendo Switch OLED',cat:'游戏设备',price:2199,op:2599,rating:4.8,sales:34100,badge:'hot',images:['https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=600&fit=crop','https://images.unsplash.com/photo-1612287230209-1ff6879c84f2?w=600&fit=crop','https://images.unsplash.com/photo-1593118247619-e2a6a7381543?w=600&fit=crop','https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=600&fit=crop'],labels:['正面','Joy-Con','TV模式','家庭'],specs:{'屏幕':'7" OLED','存储':'64GB','续航':'4.5-9h','分辨率':'TV 1080p','重量':'420g','多人':'支持'},desc:'Switch OLED 7英寸鲜艳屏幕，沉浸游戏体验。'},
-  {id:10,name:'Anker 100W 氮化镓充电器',cat:'充电配件',price:199,op:299,rating:4.6,sales:67800,badge:'discount',images:['https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&fit=crop','https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600&fit=crop','https://images.unsplash.com/photo-1625842268584-8f3296236761?w=600&fit=crop','https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&fit=crop'],labels:['正面','接口','充电','便携'],specs:{'功率':'100W','接口':'2C1A','技术':'GaN','协议':'PD3.0','重量':'180g','尺寸':'67×56mm'},desc:'Anker 100W 氮化镓充电器，三口同时快充。'}
-];
-
-const badges={hot:{cls:'badge-hot',txt:'🔥 热销'},new:{cls:'badge-new',txt:'✨ 新品'},discount:{cls:'badge-discount',txt:'⚡ 特惠'}};
-
-// ==================== STATE ====================
-let cart=[], favorites=[], user=null, orders=[];
-let curProduct=null, detailQty=1;
-let payProduct=null, payQty=1, payMethod='wechat';
-let smsTimer=null, smsCountdown=0;
-
-// Load from localStorage
-try{
-  cart=JSON.parse(localStorage.getItem('se_cart')||'[]');
-  favorites=JSON.parse(localStorage.getItem('se_fav')||'[]');
-  user=JSON.parse(localStorage.getItem('se_user')||'null');
-  orders=JSON.parse(localStorage.getItem('se_orders')||'[]');
-}catch(e){}
-function saveCart(){localStorage.setItem('se_cart',JSON.stringify(cart));updateBadge();}
-function saveFav(){localStorage.setItem('se_fav',JSON.stringify(favorites));}
-function saveUser(){localStorage.setItem('se_user',JSON.stringify(user));}
-function saveOrders(){localStorage.setItem('se_orders',JSON.stringify(orders));}
-
-// ==================== INIT ====================
-renderProducts();
-updateBadge();
-updateUserUI();
-
-// ==================== RENDER PRODUCTS ====================
-function renderProducts(){
-  const grid=document.getElementById('productGrid');
-  grid.innerHTML=products.map(p=>{
-    const b=badges[p.badge];
-    return `<div class="product-card">
-      <div class="product-img" onclick="openDetail(${p.id})">
-        <img class="img-main" src="${p.images[0]}" alt="${p.name}" loading="lazy" onerror="this.style.background='var(--light-gray);this.style.objectFit='none';this.style.padding='40px';this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><text y=%22120%22 x=%22100%22 text-anchor=%22middle%22 font-size=%2260%22>📦</text></svg>'">
-        <img class="img-hover" src="${p.images[1]}" loading="lazy" onerror="this.style.display='none'">
-        <span class="product-badge ${b.cls}">${b.txt}</span>
-        <div class="product-actions">
-          <button title="收藏" onclick="event.stopPropagation();toggleFav(${p.id})">♡</button>
-          <button title="加购" onclick="event.stopPropagation();addCart(${p.id},1)">🛒</button>
+        <div id="gameOverScreen" class="ui-screen hidden">
+            <h2 id="resultTitle" class="result-message"></h2>
+            <div id="newRecordBadge" class="new-record hidden">🏆 新纪录！</div>
+            <div class="final-score">本局得分: <span id="finalScore">0</span></div>
+            <div class="best-score">历史最高分: <span id="finalBestScore">0</span></div>
+            <div class="stats" id="gameStats"></div>
+            <button class="restart-btn" id="restartButton">再来一局</button>
+            <button class="back-btn" id="backButton">返回主页</button>
         </div>
-      </div>
-      <div class="product-info" onclick="openDetail(${p.id})">
-        <h4>${p.name}</h4>
-        <div class="product-price"><span class="price-c">¥${p.price.toLocaleString()}</span><span class="price-o">¥${p.op.toLocaleString()}</span></div>
-        <div class="product-rating">⭐ ${p.rating} <span>| ${(p.sales/10000).toFixed(1)}万+</span></div>
-      </div>
-      <button class="btn-buy" onclick="event.stopPropagation();directBuy(${p.id})">立即购买</button>
-    </div>`;
-  }).join('');
-}
-
-// ==================== TOAST ====================
-function toast(msg,type){
-  const t=document.getElementById('toast');t.textContent=msg;
-  t.className='toast show'+(type?' '+type:'');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);
-}
-
-// ==================== USER AUTH ====================
-function openLogin(tab){
-  document.getElementById('loginOverlay').classList.add('active');
-  document.body.style.overflow='hidden';
-  if(tab==='register') switchLoginTab('register');
-}
-function closeLogin(){
-  document.getElementById('loginOverlay').classList.remove('active');
-  document.body.style.overflow='';
-}
-function switchLoginTab(tab){
-  document.querySelectorAll('.lp-tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
-  document.getElementById('lpLogin').classList.toggle('active',tab==='login');
-  document.getElementById('lpRegister').classList.toggle('active',tab==='register');
-}
-
-function sendSMS(){
-  const phone=document.getElementById('phoneInput').value.trim();
-  if(!/^1\d{10}$/.test(phone)){toast('请输入正确的手机号码');return;}
-  startSMSCountdown('smsBtn');
-  toast('📱 验证码已发送至 '+phone+'\n（演示模式：验证码为 888888）');
-}
-function sendRegSMS(){
-  const phone=document.getElementById('regPhone').value.trim();
-  if(!/^1\d{10}$/.test(phone)){toast('请输入正确的手机号码');return;}
-  startSMSCountdown('regSmsBtn');
-  toast('📱 验证码已发送至 '+phone+'\n（演示模式：验证码为 888888）');
-}
-function startSMSCountdown(btnId){
-  if(smsCountdown>0)return;smsCountdown=60;
-  const btn=document.getElementById(btnId);btn.disabled=true;
-  function tick(){if(smsCountdown<=0){btn.textContent='获取验证码';btn.disabled=false;return}btn.textContent=smsCountdown+'s';smsCountdown--;setTimeout(tick,1000)}
-  tick();
-}
-
-function doLogin(){
-  const phone=document.getElementById('phoneInput').value.trim();
-  const sms=document.getElementById('smsInput').value.trim();
-  if(!/^1\d{10}$/.test(phone)){toast('请输入正确的手机号码');return}
-  if(sms!=='888888'){toast('验证码错误（演示验证码：888888）');return}
-  user={phone, name:'用户'+phone.slice(-4), avatar:'', loginTime:Date.now()};
-  saveUser();updateUserUI();closeLogin();
-  toast('✅ 登录成功！欢迎回来，'+user.name,'success');
-}
-
-function doRegister(){
-  const phone=document.getElementById('regPhone').value.trim();
-  const sms=document.getElementById('regSms').value.trim();
-  const pwd=document.getElementById('regPwd').value;
-  const pwd2=document.getElementById('regPwd2').value;
-  const nick=document.getElementById('regNickname').value.trim();
-  if(!/^1\d{10}$/.test(phone)){toast('请输入正确的手机号码');return}
-  if(sms!=='888888'){toast('验证码错误（演示验证码：888888）');return}
-  if(pwd.length<6||pwd.length>20){toast('密码长度需要6-20位');return}
-  if(pwd!==pwd2){toast('两次密码不一致');return}
-  user={phone,name:nick||'用户'+phone.slice(-4),avatar:'',loginTime:Date.now()};
-  saveUser();updateUserUI();closeLogin();
-  toast('✅ 注册成功！欢迎加入 ShopEase，'+user.name,'success');
-}
-
-function thirdLogin(platform){
-  user={phone:'',name:platform+'用户',avatar:'',loginTime:Date.now()};
-  saveUser();updateUserUI();closeLogin();
-  toast('✅ 通过'+platform+'登录成功！','success');
-}
-
-function logout(){
-  user=null;saveUser();updateUserUI();
-  favorites=[];saveFav();
-  toast('👋 已退出登录');
-}
-
-function updateUserUI(){
-  const topBar=document.getElementById('topbarName').parentElement.parentElement;
-  const isLogged=!!user;
-  document.querySelectorAll('.not-logged').forEach(el=>el.style.display=isLogged?'none':'');
-  document.querySelectorAll('.is-logged').forEach(el=>el.style.display=isLogged?'':'');
-  if(isLogged) document.getElementById('topbarName').textContent='你好，'+user.name;
-}
-
-// ==================== CART ====================
-function addCart(pid,qty){
-  const ex=cart.find(i=>i.pid===pid);const p=products.find(x=>x.id===pid);
-  if(ex){ex.qty+=qty}else{cart.push({pid,qty})}
-  saveCart();renderCart();toast('✅ '+p.name+' ×'+qty+' 已加入购物车','success');
-}
-function removeCart(pid){cart=cart.filter(i=>i.pid!==pid);saveCart();renderCart();toast('已移出购物车')}
-function changeCartQty(pid,d){const ex=cart.find(i=>i.pid===pid);if(!ex)return;ex.qty=Math.max(1,ex.qty+d);if(ex.qty<=0)removeCart(pid);else{saveCart();renderCart()}}
-function updateBadge(){const b=document.getElementById('cartBadge');const t=cart.reduce((s,i)=>s+i.qty,0);b.textContent=t;b.style.display=t>0?'flex':'none'}
-function getCartTotal(){return cart.reduce((s,i)=>{const p=products.find(x=>x.id===i.pid);return s+(p?p.price*i.qty:0)},0)}
-
-function openCart(){
-  if(!user){toast('请先登录后再查看购物车');openLogin();return}
-  document.getElementById('cartOverlay').classList.add('active');
-  document.body.style.overflow='hidden';
-  renderCart();
-}
-function closeCart(){document.getElementById('cartOverlay').classList.remove('active');document.body.style.overflow=''}
-function renderCart(){
-  const body=document.getElementById('cartBody');
-  const footer=document.getElementById('cartFooter');
-  if(cart.length===0){
-    body.innerHTML=`<div class="sp-empty"><div class="sp-empty-icon">🛒</div><h4>购物车是空的</h4><p>快去挑选心仪的商品吧</p></div>`;
-    footer.innerHTML='';
-    return;
-  }
-  body.innerHTML=cart.map(i=>{const p=products.find(x=>x.id===i.pid);if(!p)return'';return`
-    <div class="cart-item">
-      <img class="cart-item-img" src="${p.images[0]}" onclick="openDetail(${p.id})" onerror="this.style.objectFit='none';this.style.padding='20px';this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><text y=%2252%22 x=%2240%22 text-anchor=%22middle%22 font-size=%2230%22>📦</text></svg>'">
-      <div class="cart-item-info">
-        <h4>${p.name}</h4>
-        <div class="ci-price">¥${p.price.toLocaleString()}</div>
-        <div class="cart-qty-row">
-          <div class="qty-ctrl"><button onclick="changeCartQty(${p.id},-1)">−</button><span class="qv">${i.qty}</span><button onclick="changeCartQty(${p.id},1)">+</button></div>
-        </div>
-      </div>
-      <div class="cart-item-del" onclick="removeCart(${p.id})">🗑️</div>
     </div>
-  `}).join('');
-  const total=getCartTotal();
-  footer.innerHTML=`<div class="cart-total-row"><span class="cart-total-label">合计 (${cart.reduce((s,i)=>s+i.qty,0)}件商品)</span><span class="cart-total-price"><span class="sym">¥</span>${total.toLocaleString()}</span></div><button class="cart-checkout" onclick="cartCheckout()">去结算</button>`;
-}
 
-function cartCheckout(){
-  if(cart.length===0)return;
-  const total=getCartTotal();
-  closeCart();
-  // Open payment with manual total entry
-  const manualPay={name:'购物车商品 (共'+cart.reduce((s,i)=>s+i.qty,0)+'件)',price:total,cat:'多件商品'};
-  openPayment(manualPay,1,total);
-}
+    <script>
+        (function() {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const startScreen = document.getElementById('startScreen');
+            const gameOverScreen = document.getElementById('gameOverScreen');
+            const startButton = document.getElementById('startButton');
+            const restartButton = document.getElementById('restartButton');
+            const backButton = document.getElementById('backButton');
+            const currentScoreEl = document.getElementById('currentScore');
+            const targetScoreEl = document.getElementById('targetScore');
+            const highScoreEl = document.getElementById('highScore');
+            const finalScoreEl = document.getElementById('finalScore');
+            const finalBestScoreEl = document.getElementById('finalBestScore');
+            const resultTitleEl = document.getElementById('resultTitle');
+            const newRecordBadge = document.getElementById('newRecordBadge');
+            const gameStatsEl = document.getElementById('gameStats');
+            const shieldIndicator = document.getElementById('shieldIndicator');
+            const controlHint = document.getElementById('controlHint');
+            const modeButtons = document.querySelectorAll('.mode-btn');
 
-// ==================== FAVORITES ====================
-function toggleFav(pid){
-  if(!user){toast('请先登录后再收藏');openLogin();return}
-  const idx=favorites.indexOf(pid);
-  if(idx>-1){favorites.splice(idx,1);toast('已取消收藏')}else{favorites.push(pid);toast('❤️ 已加入收藏')}
-  saveFav();renderFav();
-}
+            let width = canvas.width = canvas.clientWidth;
+            let height = canvas.height = canvas.clientHeight;
 
-function openFavorites(){
-  if(!user){toast('请先登录后再查看收藏');openLogin();return}
-  document.getElementById('favOverlay').classList.add('active');
-  document.body.style.overflow='hidden';
-  renderFav();
-}
-function closeFavorites(){document.getElementById('favOverlay').classList.remove('active');document.body.style.overflow=''}
-function renderFav(){
-  const body=document.getElementById('favBody');
-  if(favorites.length===0){
-    body.innerHTML=`<div class="sp-empty"><div class="sp-empty-icon">❤️</div><h4>收藏夹为空</h4><p>浏览商品时点击 ♡ 即可收藏</p></div>`;
-    return;
-  }
-  body.innerHTML=favorites.map(pid=>{const p=products.find(x=>x.id===pid);if(!p)return'';return`
-    <div class="fav-item">
-      <img class="fav-item-img" src="${p.images[0]}" onclick="openDetail(${p.id})" loading="lazy" onerror="this.style.objectFit='none';this.style.padding='20px';this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 90 90%22><text y=%2255%22 x=%2245%22 text-anchor=%22middle%22 font-size=%2235%22>📦</text></svg>'">
-      <div class="fav-item-info">
-        <h4 onclick="openDetail(${p.id})">${p.name}</h4>
-        <div class="fav-price">¥${p.price.toLocaleString()} <span style="font-size:12px;color:var(--gray);text-decoration:line-through;font-weight:400">¥${p.op.toLocaleString()}</span></div>
-        <div class="fav-actions">
-          <button class="fav-buy" onclick="directBuy(${p.id})">立即购买</button>
-          <button class="fav-del" onclick="toggleFav(${p.id});renderFav()">取消收藏</button>
-        </div>
-      </div>
-    </div>
-  `}).join('');
-}
+            const GAME_MODES = {
+                normal: { name: '标准模式', targetScore: 30, speedMultiplier: 1, timeLimit: 0, hasFog: true },
+                speed: { name: '极速模式', targetScore: 20, speedMultiplier: 1.5, timeLimit: 0, hasFog: true },
+                collection: { name: '收集专项', targetScore: 40, speedMultiplier: 1, timeLimit: 80, hasFog: false }
+            };
 
-// ==================== USER CENTER (我的) ====================
-function openUserCenter(){
-  if(!user){toast('请先登录');openLogin();return}
-  document.getElementById('userOverlay').classList.add('active');
-  document.body.style.overflow='hidden';
-  renderUserCenter();
-}
-function closeUserCenter(){document.getElementById('userOverlay').classList.remove('active');document.body.style.overflow=''}
-function renderUserCenter(){
-  const body=document.getElementById('userBody');
-  const pendingOrders=orders.filter(o=>o.status==='待发货').length;
-  body.innerHTML=`
-    <div class="user-header-section">
-      <div class="user-avatar">👤</div>
-      <div class="user-name">${user.name}</div>
-      <div class="user-id">手机号：${user.phone||'第三方登录'}</div>
-    </div>
-    <div class="user-stats">
-      <div class="user-stat" onclick="showOrders('all')"><div class="num">${orders.length}</div><div class="label">全部订单</div></div>
-      <div class="user-stat" onclick="showOrders('pending')"><div class="num">${pendingOrders}</div><div class="label">待发货</div></div>
-      <div class="user-stat" onclick="openFavorites()"><div class="num">${favorites.length}</div><div class="label">收藏商品</div></div>
-      <div class="user-stat" onclick="openCart()"><div class="num">${cart.reduce((s,i)=>s+i.qty,0)}</div><div class="label">购物车</div></div>
-    </div>
-    <div class="user-menu">
-      <div class="user-menu-item" onclick="showOrders('all')"><div class="mi-icon um-orange">📋</div>我的订单<div class="mi-arrow">›</div></div>
-      <div class="user-menu-item" onclick="openFavorites()"><div class="mi-icon um-red">❤️</div>我的收藏<div class="mi-arrow">›</div></div>
-      <div class="user-menu-item"><div class="mi-icon um-blue">🎫</div>优惠券<span style="margin-left:auto;font-size:12px;color:var(--primary);margin-right:4px">3张可用</span><div class="mi-arrow">›</div></div>
-      <div class="user-menu-item"><div class="mi-icon um-green">📍</div>收货地址<div class="mi-arrow">›</div></div>
-      <div class="user-menu-item"><div class="mi-icon um-purple">⚙️</div>账号设置<div class="mi-arrow">›</div></div>
-      <div class="user-menu-item"><div class="mi-icon um-cyan">💬</div>客服中心<div class="mi-arrow">›</div></div>
-    </div>
-    <button class="logout-btn" onclick="logout();closeUserCenter()">退出登录</button>
-    <div id="orderListSection" style="margin-top:16px"></div>
-  `;
-}
+            let currentMode = 'normal';
+            let gameState = 'start'; // start, playing, gameover
+            let score = 0;
+            let highScore = parseInt(localStorage.getItem('ruinLightHighScore') || '0');
+            let gameTime = 0;
+            let startTime = 0;
+            let gamesPlayed = parseInt(localStorage.getItem('ruinLightGamesPlayed') || '0');
 
-function showOrders(filter){
-  const sec=document.getElementById('orderListSection');
-  let filtered=orders;
-  if(filter==='pending') filtered=orders.filter(o=>o.status==='待发货');
-  if(filtered.length===0){sec.innerHTML='<div class="sp-empty" style="padding:30px"><h4 style="font-size:14px">暂无相关订单</h4></div>';return}
-  sec.innerHTML=`<h4 style="margin-bottom:10px;font-size:14px">${filter==='pending'?'待发货':'全部'}订单</h4>`+filtered.map(o=>`<div class="order-card">
-    <div class="oh"><span>订单号：${o.id}</span><span>${o.date}</span></div>
-    <div class="oi"><img src="${o.img}" onerror="this.style.objectFit='none';this.style.padding='10px';this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22><text y=%2238%22 x=%2230%22 text-anchor=%22middle%22 font-size=%2224%22>📦</text></svg>'"><div class="od">${o.name}</div><div class="oprice">¥${o.total.toLocaleString()}</div></div>
-    <div class="oh" style="margin-top:6px"><span class="ostatus" style="color:${o.status==='待发货'?'var(--accent)':'var(--secondary)'}">${o.status}</span></div>
-  </div>`).join('');
-}
+            highScoreEl.textContent = highScore;
 
-// ==================== PRODUCT DETAIL ====================
-function openDetail(pid){
-  const p=products.find(x=>x.id===pid);if(!p)return;curProduct=p;detailQty=1;
-  document.getElementById('dmGallery').innerHTML=`
-    ${p.images.map((img,i)=>`<img class="g-img" src="${img}" style="display:${i===0?'block':'none'}" onclick="openLightbox('${img}')">`).join('')}
-    <div class="dm-thumbs">${p.images.map((img,i)=>`<div class="dm-thumb-wrap"><img class="dm-thumb ${i===0?'active':''}" src="${img}" onclick="switchGalleryImg(${i})" loading="lazy"><span>${p.labels[i]}</span></div>`).join('')}</div>`;
-  const save=p.op-p.price;
-  document.getElementById('dmInfo').innerHTML=`
-    <div class="cat">${p.cat}</div><h2>${p.name}</h2>
-    <div class="dm-price-block"><span class="bp">¥${p.price.toLocaleString()}</span><span class="op">¥${p.op.toLocaleString()}</span><span class="save">省¥${save.toLocaleString()}</span></div>
-    <div class="dm-specs"><h4>📋 规格参数</h4><div class="dm-specs-grid">${Object.entries(p.specs).map(([k,v])=>`<div class="dm-spec"><span class="sl">${k}</span><span class="sv">${v}</span></div>`).join('')}</div></div>
-    <div class="dm-desc">${p.desc}</div>
-    <div class="dm-qty-row"><span>数量：</span><div class="qty-ctrl"><button onclick="changeDetailQty(-1)">−</button><span class="qv" id="qtyVal">1</span><button onclick="changeDetailQty(1)">+</button></div></div>
-    <div class="dm-btns"><button class="dm-btn-cart" onclick="addCart(curProduct.id,detailQty);toast('✅ 已加入购物车','success')">🛒 加入购物车</button><button class="dm-btn-buy" onclick="openPayment(curProduct,detailQty,curProduct.price*detailQty)">⚡ 立即购买</button></div>`;
-  document.getElementById('detailOverlay').classList.add('active');
-  document.body.style.overflow='hidden';
-}
-function closeDetail(){document.getElementById('detailOverlay').classList.remove('active');document.body.style.overflow=''}
-function switchGalleryImg(i){const imgs=document.querySelectorAll('#dmGallery .g-img');const ths=document.querySelectorAll('#dmGallery .dm-thumb');imgs.forEach((img,j)=>img.style.display=j===i?'block':'none');ths.forEach((t,j)=>t.classList.toggle('active',j===i))}
-function changeDetailQty(d){detailQty=Math.max(1,detailQty+d);const v=document.getElementById('qtyVal');if(v)v.textContent=detailQty}
-function openLightbox(src){document.getElementById('lbImg').src=src;document.getElementById('lightbox').classList.add('active')}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('active')}
+            const player = {
+                x: 80,
+                y: height / 2,
+                radius: 18,
+                velocityY: 0,
+                hasShield: false,
+                isPressing: false
+            };
 
-// ==================== PAYMENT ====================
-function directBuy(pid){const p=products.find(x=>x.id===pid);if(!p)return;openPayment(p,1,p.price)}
-function openPayment(p,qty,total){
-  payProduct=p;payQty=qty;
-  payMethod='wechat';document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('selected'));
-  document.querySelector('.pay-method[data-method="wechat"]').classList.add('selected');
-  document.getElementById('paySummary').innerHTML=`
-    <div class="sr"><span>商品名称</span><span>${p.name||'(多件商品)'}</span></div>
-    <div class="sr"><span>单价</span><span>¥${(total/qty).toLocaleString()}</span></div>
-    <div class="sr"><span>数量</span><span>×${qty}</span></div>
-    <div class="sr"><span>运费</span><span style="color:var(--secondary)">免运费</span></div>
-    <div class="sr st"><span>应付金额</span><span>¥${total.toLocaleString()}</span></div>`;
-  document.getElementById('btnPayAmt').textContent=total.toLocaleString();
-  document.getElementById('payOverlay').classList.add('active');
-  document.getElementById('detailOverlay').classList.remove('active');
-  document.getElementById('cartOverlay').classList.remove('active');
-}
-function closePay(){document.getElementById('payOverlay').classList.remove('active');document.body.style.overflow=''}
-function selectPayMethod(m,el){payMethod=m;document.querySelectorAll('.pay-method').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')}
+            let crystals = [];
+            let bigCrystals = [];
+            let shieldChips = [];
+            let fogs = [];
+            let fallingRocks = [];
 
-document.getElementById('btnPay').addEventListener('click',()=>{
-  closePay();document.getElementById('procScreen').classList.add('active');
-  setTimeout(()=>{
-    document.getElementById('procScreen').classList.remove('active');
-    const oid='SE'+Date.now().toString(36).toUpperCase();
-    orders.unshift({id:oid,date:new Date().toLocaleDateString(),name:payProduct.name||'购物车商品',total:payProduct.price*payQty,img:payProduct.images?payProduct.images[0]:'',status:'待发货',qty:payQty});
-    if(orders.length>20)orders=orders.slice(0,20);
-    saveOrders();
-    document.getElementById('succMsg').textContent='订单号：'+oid+'，预计3-5天送达';
-    document.getElementById('succScreen').classList.add('active');
-    if(payProduct.id) cart=cart.filter(i=>i.pid!==payProduct.id);saveCart();
-  },1800+Math.random()*1200);
-});
-function closeSucc(){document.getElementById('succScreen').classList.remove('active');document.body.style.overflow='';updateBadge()}
+            let lastCrystalTime = 0;
+            let lastBigCrystalTime = 0;
+            let lastShieldChipTime = 0;
+            let lastFogTime = 0;
+            let lastRockTime = 0;
 
-// ==================== CAROUSEL ====================
-(function(){
-  const track=document.getElementById('carouselTrack'),dots=document.querySelectorAll('#carDots .dot');
-  let cur=0,total=3,interval;
-  function go(i){cur=((i%total)+total)%total;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur))}
-  function next(){go(cur+1)}function prev(){go(cur-1)}
-  function start(){clearInterval(interval);interval=setInterval(next,4000)}function stop(){clearInterval(interval)}
-  document.getElementById('carPrev').addEventListener('click',()=>{prev();start()});
-  document.getElementById('carNext').addEventListener('click',()=>{next();start()});
-  dots.forEach((d,i)=>d.addEventListener('click',()=>{go(i);start()}));
-  document.getElementById('carousel').addEventListener('mouseenter',stop);
-  document.getElementById('carousel').addEventListener('mouseleave',start);
-  start();
-})();
+            const PHYSICS = {
+                lift: -0.8,
+                gravity: 0.35,
+                terminalVelocity: 8
+            };
 
-// ==================== KEYBOARD ====================
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){
-    if(document.getElementById('lightbox').classList.contains('active'))closeLightbox();
-    else if(document.getElementById('detailOverlay').classList.contains('active'))closeDetail();
-    else if(document.getElementById('payOverlay').classList.contains('active'))closePay();
-    else if(document.getElementById('cartOverlay').classList.contains('active'))closeCart();
-    else if(document.getElementById('favOverlay').classList.contains('active'))closeFavorites();
-    else if(document.getElementById('userOverlay').classList.contains('active'))closeUserCenter();
-    else if(document.getElementById('loginOverlay').classList.contains('active'))closeLogin();
-  }
-});
+            function resizeCanvas() {
+                width = canvas.width = canvas.clientWidth;
+                height = canvas.height = canvas.clientHeight;
+            }
 
-// ==================== SEARCH ====================
-document.querySelector('.search-box button').addEventListener('click',()=>{
-  const q=document.querySelector('.search-box input').value.trim();
-  if(q)toast('🔍 搜索"'+q+'"（演示模式）');
-});
+            window.addEventListener('resize', resizeCanvas);
 
-console.log('✅ ShopEase 完整版已就绪：登录/注册 | 我的 | 收藏 | 购物车 | 支付 | 详情');
-</script>
+            function getDifficultyMultiplier() {
+                const modeCfg = GAME_MODES[currentMode];
+                let diff = 1;
+                if (score <= 20) diff = 1;
+                else if (score <= 50) diff = 2;
+                else diff = 3;
+                return diff * modeCfg.speedMultiplier;
+            }
+
+            function getBackgroundColor() {
+                let r, g, b;
+                if (score <= 20) {
+                    r = 42 + (score / 20) * 20;
+                    g = 42 + (score / 20) * 10;
+                    b = 62 + (score / 20) * 10;
+                } else if (score <= 50) {
+                    const t = (score - 20) / 30;
+                    r = 62 + t * 60;
+                    g = 52 - t * 12;
+                    b = 72 - t * 22;
+                } else {
+                    const t = Math.min((score - 50) / 50, 1);
+                    r = 122 + t * 30;
+                    g = 40 - t * 20;
+                    b = 50 - t * 20;
+                }
+                return `rgb(${Math.floor(r)}, ${Math.floor(g)}, ${Math.floor(b)})`;
+            }
+
+            function getSpawnInterval(type) {
+                const diff = getDifficultyMultiplier();
+                const intervals = {
+                    crystal: 600 / diff,
+                    bigCrystal: 3000 / diff,
+                    shieldChip: 8000 / diff,
+                    fog: 2500 / diff,
+                    rock: 4000 / diff
+                };
+                if (diff >= 3) {
+                    intervals.fog = 1200 / diff;
+                    intervals.rock = 1500 / diff;
+                } else if (diff >= 2) {
+                    intervals.fog = 1800 / diff;
+                    intervals.rock = 2000 / diff;
+                }
+                return intervals[type];
+            }
+
+            function spawnCrystal() {
+                const crystal = {
+                    x: width + 20,
+                    y: Math.random() * (height - 80) + 40,
+                    radius: 10,
+                    speed: 2.5 * getDifficultyMultiplier(),
+                    collected: false
+                };
+                crystals.push(crystal);
+            }
+
+            function spawnBigCrystal() {
+                const crystal = {
+                    x: width + 30,
+                    y: Math.random() * (height - 120) + 60,
+                    radius: 18,
+                    speed: 2.2 * getDifficultyMultiplier(),
+                    collected: false,
+                    pulse: 0
+                };
+                bigCrystals.push(crystal);
+            }
+
+            function spawnShieldChip() {
+                const chip = {
+                    x: width + 20,
+                    y: Math.random() * (height - 80) + 40,
+                    radius: 12,
+                    speed: 2.3 * getDifficultyMultiplier(),
+                    collected: false
+                };
+                shieldChips.push(chip);
+            }
+
+            function spawnFog() {
+                if (!GAME_MODES[currentMode].hasFog) return;
+                
+                const fog = {
+                    x: width + 20,
+                    y: Math.random() * (height - 100),
+                    width: 40 + Math.random() * 60,
+                    height: 60 + Math.random() * 80,
+                    speed: (1.2 + Math.random() * 1.2) * getDifficultyMultiplier()
+                };
+                if (Math.random() > 0.7 && fogs.length > 0) {
+                    fog.y = fogs[fogs.length - 1].y + (Math.random() > 0.5 ? -80 : 80);
+                    fog.y = Math.max(0, Math.min(height - fog.height, fog.y));
+                }
+                fogs.push(fog);
+            }
+
+            function spawnRock() {
+                return {
+                    x: Math.random() * (width - 60) + 30,
+                    y: -40,
+                    radius: 15 + Math.random() * 15,
+                    speed: (4 + Math.random() * 3) * getDifficultyMultiplier()
+                };
+            }
+
+            function checkCollisionCircle(c1x, c1y, r1, c2x, c2y, r2) {
+                const dx = c1x - c2x;
+                const dy = c1y - c2y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                return dist < r1 + r2;
+            }
+
+            function checkCollisionCircleRect(cx, cy, cr, rx, ry, rw, rh) {
+                const closestX = Math.max(rx, Math.min(cx, rx + rw));
+                const closestY = Math.max(ry, Math.min(cy, ry + rh));
+                const dx = cx - closestX;
+                const dy = cy - closestY;
+                return (dx * dx + dy * dy) < (cr * cr);
+            }
+
+            function giveFreeShieldIfNeeded() {
+                if ((gamesPlayed + 1) % 3 === 0 && !player.hasShield) {
+                    player.hasShield = true;
+                    shieldIndicator.style.display = 'block';
+                }
+            }
+
+            function startGame() {
+                score = 0;
+                gameTime = 0;
+                crystals = [];
+                bigCrystals = [];
+                shieldChips = [];
+                fogs = [];
+                fallingRocks = [];
+                lastCrystalTime = performance.now();
+                lastBigCrystalTime = performance.now();
+                lastShieldChipTime = performance.now();
+                lastFogTime = performance.now();
+                lastRockTime = performance.now();
+
+                player.x = width * 0.15;
+                player.y = height / 2;
+                player.velocityY = 0;
+                player.hasShield = false;
+                giveFreeShieldIfNeeded();
+
+                currentScoreEl.textContent = score;
+                targetScoreEl.textContent = GAME_MODES[currentMode].targetScore;
+                updateShieldIndicator();
+
+                startScreen.classList.add('hidden');
+                gameOverScreen.classList.add('hidden');
+                gameState = 'playing';
+                startTime = performance.now();
+
+                if ('ontouchstart' in window) {
+                    controlHint.textContent = '按住屏幕上浮，松开下落';
+                } else {
+                    controlHint.textContent = '长按空格上浮，松开下落';
+                }
+            }
+
+            function updateShieldIndicator() {
+                if (player.hasShield) {
+                    shieldIndicator.style.display = 'block';
+                } else {
+                    shieldIndicator.style.display = 'none';
+                }
+            }
+
+            function gameOver(isVictory) {
+                gameState = 'gameover';
+                gamesPlayed++;
+                localStorage.setItem('ruinLightGamesPlayed', gamesPlayed.toString());
+
+                const duration = ((performance.now() - startTime) / 1000).toFixed(1);
+                let isNewRecord = false;
+
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem('ruinLightHighScore', highScore.toString());
+                    isNewRecord = true;
+                }
+
+                highScoreEl.textContent = highScore;
+                finalScoreEl.textContent = score;
+                finalBestScoreEl.textContent = highScore;
+
+                if (isVictory) {
+                    resultTitleEl.textContent = '🎉 通关成功！';
+                    resultTitleEl.className = 'result-message success';
+                } else {
+                    resultTitleEl.textContent = '💀 游戏结束';
+                    resultTitleEl.className = 'result-message fail';
+                }
+
+                if (isNewRecord) {
+                    newRecordBadge.classList.remove('hidden');
+                } else {
+                    newRecordBadge.classList.add('hidden');
+                }
+
+                const modeCfg = GAME_MODES[currentMode];
+                let statsHtml = `模式：${modeCfg.name}<br>`;
+                statsHtml += `用时：${duration}秒<br>`;
+                statsHtml += `收集：${score} 个晶石单位`;
+                gameStatsEl.innerHTML = statsHtml;
+
+                controlHint.textContent = '';
+                setTimeout(() => {
+                    gameOverScreen.classList.remove('hidden');
+                }, 300);
+            }
+
+            function update(deltaTime) {
+                if (gameState !== 'playing') return;
+
+                gameTime += deltaTime;
+                const now = performance.now();
+
+                const modeCfg = GAME_MODES[currentMode];
+                if (modeCfg.timeLimit > 0 && gameTime / 1000 > modeCfg.timeLimit) {
+                    if (score >= modeCfg.targetScore) {
+                        gameOver(true);
+                    } else {
+                        gameOver(false);
+                    }
+                    return;
+                }
+
+                if (score >= modeCfg.targetScore) {
+                    gameOver(true);
+                    return;
+                }
+
+                if (player.isPressing) {
+                    player.velocityY += PHYSICS.lift;
+                } else {
+                    player.velocityY += PHYSICS.gravity;
+                }
+
+                player.velocityY = Math.max(-PHYSICS.terminalVelocity, Math.min(PHYSICS.terminalVelocity, player.velocityY));
+                player.y += player.velocityY;
+
+                if (player.y - player.radius < 0) {
+                    player.y = player.radius;
+                    player.velocityY = 0;
+                }
+                if (player.y + player.radius > height) {
+                    player.y = height - player.radius;
+                    player.velocityY = 0;
+                }
+
+                if (now - lastCrystalTime > getSpawnInterval('crystal')) {
+                    spawnCrystal();
+                    lastCrystalTime = now;
+                }
+
+                if (now - lastBigCrystalTime > getSpawnInterval('bigCrystal')) {
+                    spawnBigCrystal();
+                    lastBigCrystalTime = now;
+                }
+
+                if (now - lastShieldChipTime > getSpawnInterval('shieldChip') && !player.hasShield) {
+                    if (Math.random() < 0.3) {
+                        spawnShieldChip();
+                        lastShieldChipTime = now;
+                    }
+                }
+
+                if (now - lastFogTime > getSpawnInterval('fog') && GAME_MODES[currentMode].hasFog) {
+                    if (fogs.length < 3 + getDifficultyMultiplier()) {
+                        spawnFog();
+                        lastFogTime = now;
+                    }
+                }
+
+                if (now - lastRockTime > getSpawnInterval('rock')) {
+                    fallingRocks.push(spawnRock());
+                    lastRockTime = now;
+                }
+
+                crystals.forEach(crystal => {
+                    crystal.x -= crystal.speed;
+                    if (!crystal.collected && checkCollisionCircle(player.x, player.y, player.radius, crystal.x, crystal.y, crystal.radius)) {
+                        crystal.collected = true;
+                        score += 1;
+                        currentScoreEl.textContent = score;
+                    }
+                });
+                crystals = crystals.filter(c => c.x > -c.radius * 2 && !c.collected);
+
+                bigCrystals.forEach(crystal => {
+                    crystal.x -= crystal.speed;
+                    crystal.pulse += 0.1;
+                    if (!crystal.collected && checkCollisionCircle(player.x, player.y, player.radius, crystal.x, crystal.y, crystal.radius)) {
+                        crystal.collected = true;
+                        score += 5;
+                        currentScoreEl.textContent = score;
+                    }
+                });
+                bigCrystals = bigCrystals.filter(c => c.x > -c.radius * 2 && !c.collected);
+
+                shieldChips.forEach(chip => {
+                    chip.x -= chip.speed;
+                    if (!chip.collected && checkCollisionCircle(player.x, player.y, player.radius, chip.x, chip.y, chip.radius)) {
+                        chip.collected = true;
+                        player.hasShield = true;
+                        updateShieldIndicator();
+                    }
+                });
+                shieldChips = shieldChips.filter(c => c.x > -c.radius * 2 && !c.collected);
+
+                fogs.forEach(fog => {
+                    fog.x -= fog.speed;
+                });
+                fogs = fogs.filter(f => f.x > -f.width);
+
+                fallingRocks.forEach(rock => {
+                    rock.y += rock.speed;
+                });
+                fallingRocks = fallingRocks.filter(r => r.y < height + r.radius);
+
+                for (const rock of fallingRocks) {
+                    if (checkCollisionCircle(player.x, player.y, player.radius, rock.x, rock.y, rock.radius)) {
+                        gameOver(false);
+                        return;
+                    }
+                }
+
+                for (const fog of fogs) {
+                    if (checkCollisionCircleRect(player.x, player.y, player.radius, fog.x, fog.y, fog.width, fog.height)) {
+                        if (player.hasShield) {
+                            player.hasShield = false;
+                            updateShieldIndicator();
+                            fogs = fogs.filter(f => f !== fog);
+                        } else {
+                            gameOver(false);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            function draw() {
+                ctx.fillStyle = getBackgroundColor();
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < width; i += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.lineTo(i, height);
+                    ctx.stroke();
+                }
+
+                fogs.forEach(fog => {
+                    const gradient = ctx.createLinearGradient(fog.x, fog.y, fog.x + fog.width, fog.y + fog.height);
+                    gradient.addColorStop(0, 'rgba(80, 0, 120, 0.6)');
+                    gradient.addColorStop(1, 'rgba(80, 0, 120, 0.8)');
+                    ctx.fillStyle = gradient;
+                    const r = 8, x = fog.x, y = fog.y, w = fog.width, h = fog.height;
+                    ctx.beginPath();
+                    ctx.moveTo(x + r, y);
+                    ctx.lineTo(x + w - r, y);
+                    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+                    ctx.lineTo(x + w, y + h - r);
+                    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                    ctx.lineTo(x + r, y + h);
+                    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+                    ctx.lineTo(x, y + r);
+                    ctx.quadraticCurveTo(x, y, x + r, y);
+                    ctx.closePath();
+                    ctx.fill();
+                });
+
+                fallingRocks.forEach(rock => {
+                    ctx.fillStyle = '#555555';
+                    ctx.beginPath();
+                    ctx.arc(rock.x, rock.y, rock.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#777777';
+                    ctx.beginPath();
+                    ctx.arc(rock.x - 3, rock.y - 3, rock.radius * 0.6, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                crystals.forEach(crystal => {
+                    const gradient = ctx.createRadialGradient(crystal.x, crystal.y, 0, crystal.x, crystal.y, crystal.radius);
+                    gradient.addColorStop(0, '#fff2cc');
+                    gradient.addColorStop(0.5, '#ffd700');
+                    gradient.addColorStop(1, '#b8860b');
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(crystal.x, crystal.y, crystal.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffecb3';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+
+                bigCrystals.forEach(crystal => {
+                    const pulseSize = Math.sin(crystal.pulse) * 2;
+                    const r = crystal.radius + pulseSize;
+                    const gradient = ctx.createRadialGradient(crystal.x, crystal.y, 0, crystal.x, crystal.y, r);
+                    gradient.addColorStop(0, '#ffffe0');
+                    gradient.addColorStop(0.5, '#ffd700');
+                    gradient.addColorStop(1, '#ff8c00');
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(crystal.x, crystal.y, r, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                });
+
+                shieldChips.forEach(chip => {
+                    ctx.fillStyle = 'rgba(0, 255, 136, 0.3)';
+                    ctx.beginPath();
+                    ctx.arc(chip.x, chip.y, chip.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#00ff88';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                    ctx.fillStyle = '#00ff88';
+                    ctx.beginPath();
+                    ctx.arc(chip.x, chip.y, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                if (player.hasShield) {
+                    ctx.strokeStyle = 'rgba(0, 255, 136, 0.6)';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.arc(player.x, player.y, player.radius + 8, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                ctx.fillStyle = '#e0e0e0';
+                ctx.beginPath();
+                ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(player.x - 6, player.y - 4, 3, 0, Math.PI * 2);
+                ctx.arc(player.x + 6, player.y - 4, 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                requestAnimationFrame(gameLoop);
+            }
+
+            function gameLoop() {
+                const now = performance.now();
+                const deltaTime = now - (gameLoop.lastTime || now);
+                gameLoop.lastTime = now;
+
+                update(deltaTime);
+                draw();
+            }
+            gameLoop.lastTime = performance.now();
+
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (gameState === 'playing') {
+                    player.isPressing = true;
+                }
+            }, { passive: false });
+
+            canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                if (gameState === 'playing') {
+                    player.isPressing = false;
+                }
+            }, { passive: false });
+
+            canvas.addEventListener('mousedown', (e) => {
+                if (gameState === 'playing') {
+                    player.isPressing = true;
+                }
+            });
+
+            canvas.addEventListener('mouseup', (e) => {
+                if (gameState === 'playing') {
+                    player.isPressing = false;
+                }
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    if (gameState === 'playing') {
+                        player.isPressing = true;
+                    }
+                }
+            });
+
+            window.addEventListener('keyup', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    if (gameState === 'playing') {
+                        player.isPressing = false;
+                    }
+                }
+            });
+
+            modeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    modeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentMode = btn.dataset.mode;
+                    targetScoreEl.textContent = GAME_MODES[currentMode].targetScore;
+                });
+            });
+
+            startButton.addEventListener('click', startGame);
+            restartButton.addEventListener('click', startGame);
+            backButton.addEventListener('click', () => {
+                gameOverScreen.classList.add('hidden');
+                startScreen.classList.remove('hidden');
+                controlHint.textContent = '';
+                gameState = 'start';
+            });
+
+            resizeCanvas();
+            requestAnimationFrame(gameLoop);
+        })();
+    </script>
 </body>
 </html>
